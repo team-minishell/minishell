@@ -40,6 +40,7 @@ int		execution(char *str)
 	return (1);
 }
 
+
 int		main(int argc, char **argv, char **envp)
 {
 	int		status;
@@ -48,6 +49,7 @@ int		main(int argc, char **argv, char **envp)
 	char	**tokens;
 
 	pid = 1;
+	ft_printf ("\ec");
 	while (1)
 	{
 		if (pid > 0)
