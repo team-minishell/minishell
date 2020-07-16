@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   builtin_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/07/16 19:53:26 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/16 19:53:29 by yochoi           ###   ########.fr       */
+/*   Created: 2020/07/16 22:42:34 by yochoi            #+#    #+#             */
+/*   Updated: 2020/07/16 22:46:36 by yochoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int		pwd(void)
-{
-	char	buf[1024];
+#include "minishell.h"
 
-	ft_bzero(buf, 1024);
-	getcwd(buf, 1024);
-	ft_printf("%s\n", buf);
-	return (1);
+int		execute_env(char **tokens)
+{
+	return 0;
 }

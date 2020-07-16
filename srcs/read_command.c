@@ -6,7 +6,7 @@
 /*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 19:53:10 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/16 20:34:50 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/07/16 22:41:23 by yochoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,18 @@ char	**get_paths_from_envp(char **envp)
 /*
 ** PATH를 하나하나 확인해봄
 */
+
 void	execute_with_envp(char **tokens, char **envp)
 {
 	char	**paths;
 	char	*full_path;
 	int		i;
+
 	i = 0;
 	paths = get_paths_from_envp(envp);
 	while (paths[i])
 	{
+		execve(tokens[0], tokens, envp);
 		full_path = ft_strjoin(paths[i], "/");
 		full_path = ft_strjoin(full_path, tokens[0]);
 		execve(full_path, tokens, envp);
@@ -60,18 +63,31 @@ void	execute_with_envp(char **tokens, char **envp)
 		ft_perror(tokens[0]);
 }
 
-int		execution(char *str, char **envp)
+/*
+** 명령어와 인자를 공백으로 구분하고
+** 빌트인 명령어면 빌트인 명령어를 실행하고
+** 빌트인 명령어가 아니면 execute_with_envp 함수로 PATH에 있는
+** 명령어를 실행함
+*/
+
+int		execution(char *str, t_env *env)
 {
 	pid_t	pid;
 	char	**tokens;
 	int		status;
+
 	tokens = ft_split(str, ' ');
-	pid = fork();
-	if (pid == 0)
+	if (check_builtins(tokens, env))
+		;
+	else
 	{
-		execute_with_envp(tokens, envp);
-		exit(0);
+		pid = fork();
+		if (pid == 0)
+		{
+			execute_with_envp(tokens, env->envp);
+			exit(0);
+		}
+		waitpid(pid, &status, 0);
 	}
-	waitpid(pid, &status, 0);
 	return (1);
 }

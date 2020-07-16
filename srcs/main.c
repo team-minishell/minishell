@@ -25,12 +25,15 @@ void	ft_perror(char *str)
 
 int		main(int argc, char **argv, char **envp)
 {
+	t_env	env;
 	int		status;
 	int		pid;
 	char	*line;
 	char	**tokens;
 
 	pid = 1;
+	env.envl = make_env_to_list(envp);
+	env.envp = make_list_to_envp(env.envl);
 	clear_screen();
 	while (1)
 	{
@@ -38,7 +41,8 @@ int		main(int argc, char **argv, char **envp)
 		{
 			ft_printf("\033[0;32mminishell> \033[0;0m");
 			get_next_line(0, &line);
-			execution(line, envp);
+			// parsing(line, env.envl);// 아무것도 안쳤을때 예외 추가해야함
+			execution(line, &env);
 		}
 		/*
 			2. 적절하게 구분하기
