@@ -6,7 +6,7 @@
 #    By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/17 20:36:22 by yochoi            #+#    #+#              #
-#    Updated: 2020/07/16 19:22:44 by yochoi           ###   ########.fr        #
+#    Updated: 2020/07/16 20:31:31 by yochoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -83,6 +83,7 @@ SRC =		ft_abs.c \
 			ft_strlen.c \
 			ft_strnew.c \
 			ft_strmapi.c \
+			ft_strcmp.c \
 			ft_strncmp.c \
 			ft_strnstr.c \
 			ft_strdel.c \

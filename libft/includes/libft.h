@@ -6,7 +6,7 @@
 /*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 21:22:29 by yochoi            #+#    #+#             */
-/*   Updated: 2020/05/27 06:15:00 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/07/16 20:31:41 by yochoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ size_t				ft_strlcpy(char *dst, const char *src, size_t size);
 size_t				ft_strlcat(char *dst, const char *src, size_t size);
 
 char				*ft_strchr(const char *s, int c);
+
+int					ft_strcmp(char *s1, char *s2);
 
 void				ft_split_del(char **ptr);
 

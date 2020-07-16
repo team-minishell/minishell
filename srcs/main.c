@@ -23,36 +23,6 @@ void	ft_perror(char *str)
 	write(2, "\n", 1);
 }
 
-int		pwd(void)
-{
-	char	buf[1024];
-
-	getcwd(buf, 1024);
-	ft_printf("%s\n", buf);
-	return (1);
-}
-
-int		execution(char *str)
-{
-	pid_t	pid;
-	char	**tokens;
-	int		status;
-	char	**envp = {NULL};
-
-	tokens = ft_split(str, ' ');
-	pid = fork();
-	if (pid == 0)
-	{
-		execve(tokens[0], tokens, envp);
-		if (errno)
-			ft_perror(tokens[0]);
-		exit(0);
-	}
-	waitpid(pid, &status, 0);
-	return (1);
-}
-
-
 int		main(int argc, char **argv, char **envp)
 {
 	int		status;
@@ -68,7 +38,7 @@ int		main(int argc, char **argv, char **envp)
 		{
 			ft_printf("\033[0;32mminishell> \033[0;0m");
 			get_next_line(0, &line);
-			execution(line);
+			execution(line, envp);
 		}
 		/*
 			2. 적절하게 구분하기

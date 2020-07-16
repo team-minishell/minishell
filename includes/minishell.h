@@ -13,6 +13,11 @@
 # include <errno.h>
 # include <string.h>
 
+int			pwd(void);
+void		read_command(char *str);
+int			execution(char *str, char **envp);
+void		ft_perror(char *str);
+
 /*
 ** 안쓰는거
 */
