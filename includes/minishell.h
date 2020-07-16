@@ -14,8 +14,18 @@
 # include <string.h>
 
 int			pwd(void);
+
+/*
+** read_command.c
+*/
+
 void		read_command(char *str);
 int			execution(char *str, char **envp);
+
+/*
+** main.c
+*/
+
 void		ft_perror(char *str);
 
 /*

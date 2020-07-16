@@ -6,7 +6,7 @@
 #    By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/28 06:15:21 by yochoi            #+#    #+#              #
-#    Updated: 2020/07/16 19:31:53 by yochoi           ###   ########.fr        #
+#    Updated: 2020/07/16 20:37:00 by yochoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,9 @@ CFLAGS = -I $(INC_DIR) -I $(LIBFT_INC) -g
 
 SRC_DIR = ./srcs/
 SRCS = $(addprefix $(SRC_DIR), $(SRC))
-SRC =	main.c
+SRC =	main.c \
+		pwd.c \
+		read_command.c
 
 OBJ_DIR = ./obj/
 OBJS = $(addprefix $(OBJ_DIR), $(OBJ))
