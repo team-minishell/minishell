@@ -6,7 +6,7 @@
 /*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 21:26:06 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/17 22:21:37 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/07/17 22:27:25 by yochoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int		execute_unset(char **tokens, t_env *env)
 
 	i = 0;
 	tmp = env->envd;
-	while (i < dict_size(env->envd) - 2)
+	while (i < dict_size(env->envd) - 1)
 	{
 		next = tmp->next;
 		if (ft_strcmp(tmp->key, tokens[1]) == 0)
