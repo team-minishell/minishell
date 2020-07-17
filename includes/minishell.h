@@ -66,6 +66,12 @@ int			check_builtins(char **tokens, t_env *env);
 char	*parsing(char *line, t_list *envl);
 
 /*
+** ft_strcvt.c
+*/
+
+char	*ft_strcvt(char *base, char *target, char *convert);
+
+/*
 ** 안쓰는거
 */
 

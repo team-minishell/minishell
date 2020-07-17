@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 21:29:37 by hna               #+#    #+#             */
-/*   Updated: 2020/07/16 22:42:01 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/07/17 19:34:04 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,15 @@ char	*ft_strcvt(char *base_str, char *target_str, char *convert_str)
 char	*parsing(char *line, t_list *envl)
 {
 	int		len;
+	char	*home_dir;
 	char	*converted_line;
 
-	converted_line = ft_strcvt("abc~~d", "~~", "hello world");
+	while (envl->content)
+	{
+		if (ft_strcmp(envl->content, "HOME") == 0)
+			converted_line = envl->content;
+	}
+	converted_line = ft_strcvt(line, "~", "hello world");
 	// printf("%s\n", converted_line);
 	return (0);
 }
