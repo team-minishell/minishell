@@ -6,7 +6,7 @@
 #    By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/28 06:15:21 by yochoi            #+#    #+#              #
-#    Updated: 2020/07/17 19:45:06 by yochoi           ###   ########.fr        #
+#    Updated: 2020/07/17 21:26:24 by yochoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,8 +54,12 @@ SRCS = $(addprefix $(SRC_DIR), $(SRC))
 SRC =	check_builtins.c \
 		convert_str.c \
 		execute_cd.c \
+		execute_echo.c \
 		execute_env.c \
+		execute_export.c \
 		execute_pwd.c \
+		execute_unset.c \
+		free_env.c \
 		main.c \
 		manage_list.c \
 		parsing.c \

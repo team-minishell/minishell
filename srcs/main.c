@@ -32,8 +32,8 @@ int		main(int argc, char **argv, char **envp)
 	char	**tokens;
 
 	pid = 1;
-	env.envl = make_env_to_list(envp);
-	env.envp = make_list_to_envp(env.envl);
+	env.envd = make_env_to_dict(envp);
+	env.envp = make_dict_to_envp(env.envd);
 	clear_screen();
 	while (1)
 	{
@@ -41,44 +41,11 @@ int		main(int argc, char **argv, char **envp)
 		{
 			ft_printf("\033[0;32mminishell> \033[0;0m");
 			get_next_line(0, &line);
-			line = parsing(line, env.envl);// 아무것도 안쳤을때 예외 추가해야함
-			execution(line, &env);
+			line = parsing(line, env.envd);
+			if (line)
+				execution(line, &env);
 		}
-		/*
-			2. 적절하게 구분하기
-		
-		tokens = ft_split(line, ' ');
-		*/
-
-		/*
-			3. 순차적으로 실행하기
-		
-		if (ft_strcmp(tokens[0], "echo") == 0)
-		{
-			ft_printf("%s\n", tokens[1]);
-			free(tokens[0]);
-			free(tokens[1]);
-			free(tokens);
-		}
-		*/
-		/*
-		if (pid == 0)
-		{
-			char	*argv[2];
-			char	*envp[] = {NULL};
-			argv[0] = ft_strdup(line);
-			argv[1] = 0;
-			execve(line, argv, envp);
-			if (errno)
-				ft_perror("execve");
-			exit(0);
-		}
-		ft_printf("pid:%d\n", pid);
-		waitpid(pid, &status, 0);
-		*/
-		/*
-			4. 에러처리하기.
-		*/
 	}
+	free_env(&env);
 	return (0);
 }

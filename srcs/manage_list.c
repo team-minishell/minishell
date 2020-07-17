@@ -6,7 +6,7 @@
 /*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 21:19:37 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/17 20:16:42 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/07/17 20:31:35 by yochoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,19 @@ t_dict	*make_env_to_dict(char **envp)
 	return (start);
 }
 
+int		dict_size(t_dict *dict)
+{
+	int		i;
+
+	i = 0;
+	while (dict)
+	{
+		dict = dict->next;
+		i++;
+	}
+	return (i);
+}
+
 char	**make_dict_to_envp(t_dict *envd)
 {
 	char	**envp;
@@ -45,10 +58,10 @@ char	**make_dict_to_envp(t_dict *envd)
 	int		str_len;
 
 	i = 0;
-	lst_len = ft_lstsize(envd);
+	lst_len = dict_size(envd);
 	if (!(envp = (char **)malloc(sizeof(char *) * (lst_len + 1))))
 		exit(MALLOC_ERROR);
-	while (i < lst_len)
+	while (i < lst_len - 2)
 	{
 		str_len = ft_strlen(envd->key) + ft_strlen(envd->value) + 2;
 		if (!(envp[i] = malloc(sizeof(char) * str_len)))
@@ -60,48 +73,17 @@ char	**make_dict_to_envp(t_dict *envd)
 		envd = envd->next;
 		i++;
 	}
+	envp[i] = 0;
 	return (envp);
 }
 
-char	**make_list_to_envp(t_dict *envl)
+char	*find_env(t_dict *envd, char *key)
 {
-	char	**envp;
-	int		i;
-	int		len;
-
-	i = 0;
-	len = ft_lstsize(envl);
-	if (!(envp = (char **)malloc(sizeof(char *) * (len + 1))))
-		exit(MALLOC_ERROR);
-	while (envl->content != 0)
+	while (envd)
 	{
-		envp[i] = ft_strdup((char *)envl->content);
-		envl = envl->next;
-		i++;
+		if (ft_strcmp(envd->key, key) == 0)
+			return (envd->value);
+		envd = envd->next;
 	}
-	envp[len] = 0;
-	// envp 2차원 배열 확인용 테스트 코드
-	// printf("======test=====\n");
-	// i = 0;
-	// while (envp[i])
-	// {
-	// 	printf("%d: %s\n", i, envp[i]);
-	// 	i++;
-	// }
-	return (envp);
+	return (0);
 }
-
-/*
-char	*find_env(t_dict *envl, char *key)
-{
-	char	**key_value;
-	char	*value;
-
-	while (envl->content)
-	{
-		key_value = ft_split(envl->content, '=');
-		if (ft_strcmp(key_value[0], key) == 0)
-			value = key_value[1];
-	}
-}
-*/

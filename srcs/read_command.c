@@ -6,7 +6,7 @@
 /*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 19:53:10 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/16 22:41:23 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/07/17 21:22:50 by yochoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int		execution(char *str, t_env *env)
 	int		status;
 
 	tokens = ft_split(str, ' ');
-	if (check_builtins(tokens, env))
+	if (!check_builtins(tokens, env))
 		;
 	else
 	{
@@ -89,5 +89,6 @@ int		execution(char *str, t_env *env)
 		}
 		waitpid(pid, &status, 0);
 	}
+	ft_split_del(tokens);
 	return (1);
 }

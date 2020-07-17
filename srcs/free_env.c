@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_cd.c                                       :+:      :+:    :+:   */
+/*   free_env.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/07/16 22:14:46 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/17 21:19:14 by yochoi           ###   ########.fr       */
+/*   Created: 2020/07/17 20:36:14 by yochoi            #+#    #+#             */
+/*   Updated: 2020/07/17 20:40:25 by yochoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		execute_cd(char **tokens, t_env *env)
+void	free_env(t_env *env)
 {
-	int		len;
-	char	*home;
+	t_dict *tmp;
 
-	home = find_env(env->envd, "HOME");
-	len = ft_split_len(tokens);
-	if (len == 1)
+	if (env->envp);
+		ft_split_del(env->envp);
+	while (env->envd)
 	{
-		chdir(home);
-		return (0);
+		tmp = env->envd->next;
+		free(env->envd->key);
+		free(env->envd->value);
+		free(env->envd);
+		env->envd = tmp;
 	}
-	chdir(tokens[1]);
-	return (0);
+	free(env);
 }
