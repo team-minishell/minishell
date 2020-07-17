@@ -35,10 +35,14 @@ int					execute_pwd(char **tokens);
 int					execute_cd(char **tokens, t_env *env);
 int					execute_env(char **tokens, t_env *env);
 int					execute_echo(char **tokens);
+int					execute_export(char **tokens, t_env *env);
+int					execute_unset(char **tokens, t_env *env);
+
+int				dict_size(t_dict *dict);
 
 t_dict				*make_env_to_dict(char **envp);
-char				**make_dict_to_envp(t_dict *envl);
-char				*find_env(t_dict *envd, char *key);
+char				**make_dict_to_envp(t_dict *envd);
+t_dict				*find_env(t_dict *envd, char *key);
 
 void				read_command(char *str);
 int					execution(char *str, t_env *env);

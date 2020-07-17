@@ -6,7 +6,7 @@
 /*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 22:42:34 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/17 20:14:50 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/07/17 22:11:44 by yochoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		execute_env(char **tokens, t_env *env)
 	tmp = env->envd;
 	while (tmp->key)
 	{
-		ft_printf("%s%s\n", tmp->key, tmp->value);
+		ft_printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
 	return 0;

@@ -6,7 +6,7 @@
 /*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 22:14:46 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/17 21:19:14 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/07/17 21:38:50 by yochoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 int		execute_cd(char **tokens, t_env *env)
 {
 	int		len;
-	char	*home;
+	t_dict	*home;
 
 	home = find_env(env->envd, "HOME");
 	len = ft_split_len(tokens);
 	if (len == 1)
 	{
-		chdir(home);
+		chdir(home->value);
 		return (0);
 	}
 	chdir(tokens[1]);

@@ -6,7 +6,7 @@
 /*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 21:19:37 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/17 20:31:35 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/07/17 22:05:00 by yochoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_dict	*make_env_to_dict(char **envp)
 		i++;
 		ft_split_del(split);
 	}
+	t->next = NULL;
 	return (start);
 }
 
@@ -77,12 +78,12 @@ char	**make_dict_to_envp(t_dict *envd)
 	return (envp);
 }
 
-char	*find_env(t_dict *envd, char *key)
+t_dict	*find_env(t_dict *envd, char *key)
 {
 	while (envd)
 	{
 		if (ft_strcmp(envd->key, key) == 0)
-			return (envd->value);
+			return (envd);
 		envd = envd->next;
 	}
 	return (0);
