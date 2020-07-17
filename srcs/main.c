@@ -41,7 +41,7 @@ int		main(int argc, char **argv, char **envp)
 		{
 			ft_printf("\033[0;32mminishell> \033[0;0m");
 			get_next_line(0, &line);
-			// parsing(line, env.envl);// 아무것도 안쳤을때 예외 추가해야함
+			line = parsing(line, env.envl);// 아무것도 안쳤을때 예외 추가해야함
 			execution(line, &env);
 		}
 		/*

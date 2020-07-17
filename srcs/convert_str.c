@@ -1,18 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcvt.c                                        :+:      :+:    :+:   */
+/*   convert_str.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 19:02:13 by hna               #+#    #+#             */
-/*   Updated: 2020/07/17 19:21:28 by hna              ###   ########.fr       */
+/*   Updated: 2020/07/17 19:48:26 by yochoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_strcvt(char *base, char *target, char *convert)
+/*
+** base = 명령어
+** target = 바꿔질문자 (e.g ~, $)
+** convert = 바꿀문자
+*/
+
+char	*convert_str(char *base, char *target, char *convert)
 {
 	int		idx;
 	int		len;
@@ -20,7 +26,7 @@ char	*ft_strcvt(char *base, char *target, char *convert)
 	char	*ret;
 
 	len = ft_strlen(base) - ft_strlen(target) + ft_strlen(convert) + 1;
-	temp = ft_strnstr(base, target, 10);
+	temp = ft_strnstr(base, target, ft_strlen(base));
 	if (temp == 0)
 		return (0);
 	if (!(ret = malloc(sizeof(char) * len)))

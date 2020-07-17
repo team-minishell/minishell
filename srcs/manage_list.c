@@ -6,34 +6,64 @@
 /*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 21:19:37 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/16 22:43:56 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/07/17 20:16:42 by yochoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_list	*make_env_to_list(char **envp)
+t_dict	*make_env_to_dict(char **envp)
 {
 	int		i;
-	t_list	*t;
-	t_list	*start;
+	char	**split;
+	t_dict	*t;
+	t_dict	*start;
 
 	i = 0;
-	if (!(start = (t_list *)malloc(sizeof(t_list))))
+	if (!(start = (t_dict *)malloc(sizeof(t_dict))))
 		exit(MALLOC_ERROR);
 	t = start;
 	while (envp[i])
 	{
-		t->content = ft_strdup(envp[i]);
-		if (!(t->next = (t_list *)malloc(sizeof(t_list))))
+		split = ft_split(envp[i], '=');
+		t->key = ft_strdup(split[0]);
+		t->value = ft_strdup(split[1]);
+		if (!(t->next = (t_dict *)malloc(sizeof(t_dict))))
 			exit(MALLOC_ERROR);
 		t = t->next;
 		i++;
+		ft_split_del(split);
 	}
 	return (start);
 }
 
-char	**make_list_to_envp(t_list *envl)
+char	**make_dict_to_envp(t_dict *envd)
+{
+	char	**envp;
+	int		i;
+	int		lst_len;
+	int		str_len;
+
+	i = 0;
+	lst_len = ft_lstsize(envd);
+	if (!(envp = (char **)malloc(sizeof(char *) * (lst_len + 1))))
+		exit(MALLOC_ERROR);
+	while (i < lst_len)
+	{
+		str_len = ft_strlen(envd->key) + ft_strlen(envd->value) + 2;
+		if (!(envp[i] = malloc(sizeof(char) * str_len)))
+			exit(MALLOC_ERROR);
+		envp[i][0] = '\0';
+		ft_strlcat(envp[i], envd->key, str_len);
+		ft_strlcat(envp[i], "=", str_len);
+		ft_strlcat(envp[i], envd->value, str_len);
+		envd = envd->next;
+		i++;
+	}
+	return (envp);
+}
+
+char	**make_list_to_envp(t_dict *envl)
 {
 	char	**envp;
 	int		i;
@@ -60,3 +90,18 @@ char	**make_list_to_envp(t_list *envl)
 	// }
 	return (envp);
 }
+
+/*
+char	*find_env(t_dict *envl, char *key)
+{
+	char	**key_value;
+	char	*value;
+
+	while (envl->content)
+	{
+		key_value = ft_split(envl->content, '=');
+		if (ft_strcmp(key_value[0], key) == 0)
+			value = key_value[1];
+	}
+}
+*/

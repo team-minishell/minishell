@@ -15,79 +15,39 @@
 
 # define MALLOC_ERROR 100
 
-typedef struct	s_env
+typedef struct		s_dict
 {
-	char		**envp;
-	t_list		*envl;
-}				t_env;
+	char			*key;
+	char			*value;
+	struct s_dict	*next;
+	
+}					t_dict;
 
-/*
-** builtin_pwd.c
-*/
 
-int			execute_pwd(char **tokens);
-
-/*
-** builtin_cd.c
-*/
-
-int			execute_cd(char **tokens);
-
-/*
-** make_env_to_list.c
-*/
-
-t_list		*make_env_to_list(char **envp);
-char		**make_list_to_envp(t_list *envl);
-
-/*
-** read_command.c
-*/
-
-void		read_command(char *str);
-int			execution(char *str, t_env *env);
-
-/*
-** main.c
-*/
-
-void		ft_perror(char *str);
-
-/*
-** check_builtins.c
-*/
-
-int			check_builtins(char **tokens, t_env *env);
-
-/*
-** parsing.c
-*/
-
-char	*parsing(char *line, t_list *envl);
-
-/*
-** ft_strcvt.c
-*/
-
-char	*ft_strcvt(char *base, char *target, char *convert);
-
-/*
-** 안쓰는거
-*/
-
-typedef struct	s_shell_info
+typedef struct		s_env
 {
-	char	*name;
-	char	*version;
-}				t_shell_info;
+	char			**envp;
+	t_dict			*envd;
+}					t_env;
 
-/*
-** 명령어 저장 안쓸듯
-*/
 
-typedef struct	s_command
-{
-	char		*buffer;
-}				t_command;
+int					execute_pwd(char **tokens);
+int					execute_cd(char **tokens, t_env *env);
+int					execute_env(char **tokens, t_env *env);
+
+t_list				*make_env_to_dict(char **envp);
+char				**make_dict_to_envp(t_list *envl);
+
+void				read_command(char *str);
+int					execution(char *str, t_env *env);
+
+void				ft_perror(char *str);
+
+int					check_builtins(char **tokens, t_env *env);
+
+
+char				*parsing(char *line, t_list *envl);
+
+char				*convert_str(char *base, char *target, char *convert);
 
 #endif
