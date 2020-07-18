@@ -6,45 +6,48 @@
 /*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 21:26:06 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/17 22:27:25 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/07/19 06:44:40 by yochoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	execute_unset2(t_dict *tmp, t_dict *before, t_env *env)
+{
+	t_dict	*point_to_free;
+
+	free(tmp->key);
+	free(tmp->value);
+	if (before)
+	{
+		before->next = tmp->next;
+		point_to_free = tmp;
+	}
+	else
+	{
+		point_to_free = tmp;
+		env->envd = point_to_free->next;
+	}
+	free(point_to_free);
+}
+
 int		execute_unset(char **tokens, t_env *env)
 {
-	int		i;
-	t_dict	*next;
-	t_dict	*before;
 	t_dict	*tmp;
+	t_dict	*point_to_free;
+	t_dict	*before;
 
-	i = 0;
 	tmp = env->envd;
-	while (i < dict_size(env->envd) - 1)
+	before = NULL;
+	while (tmp)
 	{
-		next = tmp->next;
 		if (ft_strcmp(tmp->key, tokens[1]) == 0)
 		{
-			free(tmp->key);
-			free(tmp->value);
-			if (i == 0)
-			{
-				env->envd = tmp->next;
-				free(tmp);
-			}
-			else
-			{
-				next = tmp->next;
-				free(tmp);
-				before->next = next;
-				free(env->envp);
-				env->envp = make_dict_to_envp(env->envd);
-			}
+			execute_unset2(tmp, before, env);
+			break ;
 		}
 		before = tmp;
 		tmp = tmp->next;
-		i++;
 	}
-	return (1);
+	return (0);
 }

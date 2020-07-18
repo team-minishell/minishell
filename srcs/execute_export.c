@@ -6,13 +6,17 @@
 /*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 21:25:36 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/17 22:11:52 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/07/19 04:48:25 by yochoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_envp(char **envp)
+/*
+** use ft_split_del
+*/
+
+/*void	free_envp(char **envp)
 {
 	int		i;
 
@@ -23,7 +27,7 @@ void	free_envp(char **envp)
 		i++;
 	}
 	free(envp);
-}
+}*/
 
 int		execute_export(char **tokens, t_env *env)
 {

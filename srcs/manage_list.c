@@ -6,7 +6,7 @@
 /*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 21:19:37 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/17 22:05:00 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/07/19 05:30:46 by yochoi           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,21 @@ t_dict	*make_env_to_dict(char **envp)
 	if (!(start = (t_dict *)malloc(sizeof(t_dict))))
 		exit(MALLOC_ERROR);
 	t = start;
-	while (envp[i])
+	while (envp[i] != NULL)
 	{
 		split = ft_split(envp[i], '=');
 		t->key = ft_strdup(split[0]);
 		t->value = ft_strdup(split[1]);
-		if (!(t->next = (t_dict *)malloc(sizeof(t_dict))))
+		/*if (!(t->next = (t_dict *)malloc(sizeof(t_dict))))
 			exit(MALLOC_ERROR);
-		t = t->next;
+		t = t->next;*/
 		i++;
+		if (envp[i] != NULL)
+		{
+			if (!(t->next = (t_dict *)malloc(sizeof(t_dict))))
+				exit(MALLOC_ERROR);
+			t = t->next;
+		}
 		ft_split_del(split);
 	}
 	t->next = NULL;
