@@ -1,5 +1,9 @@
 #include "minishell.h"
 
+// 1. 세미콜론(진행중)
+// 2. 파이프
+// 3. 리디렉션 (다시)
+
 void	clear_screen(void)
 {
 	ft_printf ("\ec");
@@ -35,17 +39,23 @@ int		main(int argc, char **argv, char **envp)
 	env.envd = make_env_to_dict(envp);
 	env.envp = make_dict_to_envp(env.envd);
 	clear_screen();
+	handle_signal();
 	while (1)
 	{
 		if (pid > 0)
 		{
 			ft_printf("\033[0;32mminishell> \033[0;0m");
-			get_next_line(0, &line);
+			read_line(0, &line);
+			parse_line(line);
 			line = parsing(line, env.envd);
+			/*while(t_job)
+			{
+				execution(t_job);
+				t_job = t_job->next 이런식으로 해야지 세미콜론 다음의 명령어도 수행하지 않을까요?
+			}*/
 			if (line)
 				execution(line, &env);
 		}
 	}
-	free_env(&env);
 	return (0);
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+         #
+#    By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/28 06:15:21 by yochoi            #+#    #+#              #
-#    Updated: 2020/07/17 21:26:24 by yochoi           ###   ########.fr        #
+#    Updated: 2020/07/23 20:34:16 by nahangyeol       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,11 +59,14 @@ SRC =	check_builtins.c \
 		execute_export.c \
 		execute_pwd.c \
 		execute_unset.c \
-		free_env.c \
+		execution.c \
+		handle_signal.c \
 		main.c \
 		manage_list.c \
 		parsing.c \
-		read_command.c
+		pipe.c \
+		read_line.c \
+		parse_line.c
 
 OBJ_DIR = ./obj/
 OBJS = $(addprefix $(OBJ_DIR), $(OBJ))

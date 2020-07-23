@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_command.c                                     :+:      :+:    :+:   */
+/*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 19:53:10 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/17 22:11:48 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/07/23 19:56:41 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int		execution(char *str, t_env *env)
 	char	**tokens;
 	int		status;
 
+	// check_pipe
 	tokens = ft_split(str, ' ');
 	if (!check_builtins(tokens, env))
 		;
