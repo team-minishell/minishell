@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 21:19:37 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/23 16:45:30 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/07/25 22:53:56 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,20 @@ t_dict	*find_env(t_dict *envd, char *key)
 		envd = envd->next;
 	}
 	return (0);
+}
+
+char	*find_value_in_dict(t_dict *envd, char *key)
+{
+	char	*str;
+
+	while (envd)
+	{
+		if (ft_strcmp(envd->key, key) == 0)
+		{
+			str = ft_strdup(envd->value);
+			return (str);
+		}
+		envd = envd->next;
+	}
+	return (ft_strdup(""));
 }

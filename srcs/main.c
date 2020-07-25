@@ -29,15 +29,16 @@ void	ft_perror(char *str)
 
 int		main(int argc, char **argv, char **envp)
 {
+	pid_t	pid;
 	t_env	env;
-	int		status;
-	int		pid;
+	t_job	*job;
 	char	*line;
 	char	**tokens;
 
 	pid = 1;
 	env.envd = make_env_to_dict(envp);
 	env.envp = make_dict_to_envp(env.envd);
+	g_env = &env;
 	clear_screen();
 	handle_signal();
 	while (1)
@@ -46,15 +47,10 @@ int		main(int argc, char **argv, char **envp)
 		{
 			ft_printf("\033[0;32mminishell> \033[0;0m");
 			read_line(0, &line);
-			parse_line(line);
-			line = parsing(line, env.envd);
-			/*while(t_job)
-			{
-				execution(t_job);
-				t_job = t_job->next 이런식으로 해야지 세미콜론 다음의 명령어도 수행하지 않을까요?
-			}*/
-			if (line)
-				execution(line, &env);
+			job = parse_line(line);
+			// line = parsing(line, env.envd);
+			if (job)
+				execute_job(job, &env);
 		}
 	}
 	return (0);

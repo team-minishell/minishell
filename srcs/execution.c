@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 19:53:10 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/23 19:56:41 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/07/25 22:04:34 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,4 +92,31 @@ int		execution(char *str, t_env *env)
 	}
 	ft_split_del(tokens);
 	return (1);
+}
+
+void	execute_job(t_job *job, t_env *env)
+{
+	pid_t	pid;
+	char	**tokens;
+	int		status;
+
+	while (job)
+	{
+		if ((job->str)[0] == '\0' || job->str == NULL)
+			exit(MALLOC_ERROR);
+		tokens = job->command.argv;
+		if (!check_builtins(tokens, env))
+			;
+		else
+		{
+			pid = fork();
+			if (pid == 0)
+			{
+				execute_with_envp(tokens, env->envp);
+				exit(0);
+			}
+			waitpid(pid, &status, 0);
+		}
+		job = job->next;
+	}
 }

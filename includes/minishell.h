@@ -57,6 +57,8 @@ typedef struct		s_env
 	t_dict			*envd;
 }					t_env;
 
+t_env				*g_env;
+
 /*
 ** check_builtins.c
 */
@@ -110,6 +112,7 @@ int					execute_unset(char **tokens, t_env *env);
 */
 
 int					execution(char *str, t_env *env);
+void				execute_job(t_job *job, t_env *env);
 
 /*
 ** handle_signal.c
@@ -131,6 +134,7 @@ int					dict_size(t_dict *dict);
 t_dict				*make_env_to_dict(char **envp);
 char				**make_dict_to_envp(t_dict *envd);
 t_dict				*find_env(t_dict *envd, char *key);
+char				*find_value_in_dict(t_dict *envd, char *key);
 
 /*
 ** parser_line.c

@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+void	manage_ctrl_back_slash(int _)
+{
+	(void)_;
+	ft_printf("\b \b");
+	ft_printf("\b \b");
+}
+
 void	manage_ctrl_c(int _)
 {
 	(void)_;
@@ -11,6 +18,7 @@ void	manage_ctrl_c(int _)
 
 int		handle_signal(void)
 {
-	signal(SIGINT, (void *)manage_ctrl_c);
+	signal(SIGINT, &manage_ctrl_c);
+	signal(SIGQUIT, &manage_ctrl_back_slash);
 	return (0);
 }

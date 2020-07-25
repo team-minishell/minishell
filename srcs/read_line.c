@@ -77,14 +77,16 @@ int		read_line(int fd, char **line)
 
 	i = 0;
 	get_next_line(fd, line);
+	if (line[0] == EOF)
+	{
+		ft_printf("exit\n");
+		exit(0);
+	}
 	init_quote(&q);
 	new_line = ft_strdup("");
 	new_line = ft_strjoin(new_line, *line); // ft_strjoin_free_s1();
 	while ((*line)[i])
-	{
-		check_quote(&q, *line, i);
-		i++;
-	}
+		check_quote(&q, *line, i++);
 	free(*line);
 	while (!is_quote_closed(&q) || is_end_escape(*line))
 	{
@@ -94,10 +96,7 @@ int		read_line(int fd, char **line)
 		new_line = ft_strjoin(new_line, "\n");		//new_line free
 		new_line = ft_strjoin(new_line, *line);		//new_line free
 		while ((*line)[i])
-		{
-			check_quote(&q, *line, i);
-			i++;
-		}
+			check_quote(&q, *line, i++);
 		free(*line);
 	}
 	*line = new_line;
