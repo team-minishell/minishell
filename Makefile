@@ -49,51 +49,40 @@ NAME = minishell
 CC = gcc
 CFLAGS = -I $(INC_DIR) -I $(LIBFT_INC) -g
 
-SRC_DIR = ./srcs/
-SRCS = $(addprefix $(SRC_DIR), $(SRC))
-SRC =	check_builtins.c \
-		convert_str.c \
-		execute_cd.c \
-		execute_echo.c \
-		execute_env.c \
-		execute_export.c \
-		execute_pwd.c \
-		execute_unset.c \
-		execution.c \
-		handle_signal.c \
-		main.c \
-		manage_list.c \
-		parsing.c \
-		pipe.c \
-		read_line.c \
-		parse_line.c
-
-OBJ_DIR = ./obj/
-OBJS = $(addprefix $(OBJ_DIR), $(OBJ))
-OBJ = $(SRC:.c=.o)
-
 INC_DIR = includes
 
-LIBFT_DIR = libft
 LIBFT_INC = libft/includes
-LIBFT_LIB = -L $(LIBFT_DIR) -lft
 
-all: libft_make $(NAME)
+all: make_libft make_obj $(NAME)
 
-$(NAME): $(OBJ_DIR) $(OBJS)
-	@$(CC) $(CFLAGS) -o $@ $(OBJS) $(LIBFT_LIB) $(MLX_LIB)
+$(NAME): make_obj 
+	@$(CC) $(CFLAGS) -o $@ ./obj/* -L libft -lft
 	@echo "$(_GREEN)Program '$(NAME)' compiled. $(_END)"
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c
-	@$(CC) $(CFLAGS) -o $@ -c $<
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
 
-libft_make:
+make_obj:
+	@mkdir -p ./obj
+	@$(CC) $(CFLAG) -c ./srcs/builtin/check_builtins.c	-o ./obj/check_builtins.o	-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_cd.c		-o ./obj/execute_cd.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_echo.c	-o ./obj/execute_echo.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_env.c		-o ./obj/execute_env.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_export.c	-o ./obj/execute_export.o	-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_pwd.c		-o ./obj/execute_pwd.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_unset.c	-o ./obj/execute_unset.o	-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/convert_str.c				-o ./obj/convert_str.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/execution.c				-o ./obj/execution.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/handle_signal.c			-o ./obj/handle_signal.o	-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/main.c					-o ./obj/main.o				-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/manage_list.c				-o ./obj/manage_list.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/parse_line.c				-o ./obj/parse_line.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/parsing.c					-o ./obj/parsing.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/pipe.c					-o ./obj/pipe.o				-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/read_line.c				-o ./obj/read_line.o		-I $(INC_DIR) -I $(LIBFT_INC)
+
+make_libft:
 	@make -C libft
 
 clean:
-	@rm -f $(OBJS)
-	@rm -rf $(OBJ_DIR)
+	@rm -rf obj
 	@make -C libft/ fclean
 	@echo "$(_RED)'"obj"' has been deleted. $(_END)"
 
