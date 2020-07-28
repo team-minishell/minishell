@@ -47,11 +47,15 @@ int		main(int argc, char **argv, char **envp)
 		if (pid > 0)
 		{
 			ft_printf("\033[0;32mminishell> \033[0;0m");
-			read_line(0, &line);
-			job = parse_line(line);
-			// line = parsing(line, env.envd);
-			if (job)
-				execute_job(job, &env);
+			if (read_line(0, &line) == 1)
+				;
+			else
+			{
+				job = parse_line(line);
+				// line = parsing(line, env.envd);
+				if (job)
+					execute_job(job, &env);
+			}
 		}
 	}
 	return (0);
