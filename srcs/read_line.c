@@ -76,8 +76,7 @@ int		read_line(int fd, char **line)
 	char	*new_line;
 
 	i = 0;
-	get_next_line(fd, line);
-	if (line[0] == EOF)
+	if (get_next_line(fd, line) == 0)
 	{
 		ft_printf("exit\n");
 		exit(0);
@@ -92,7 +91,13 @@ int		read_line(int fd, char **line)
 	{
 		i = 0;
 		ft_printf("> ");
-		get_next_line(fd, line);
+		if (get_next_line(fd, line) == 0)
+		{
+			ft_printf("minishell: unexpected EOF while looking for matching `\'\"\n");
+			ft_printf("minishell: syntax error: unexpected end of file\n");
+			free(*line);
+			break ;
+		}
 		new_line = ft_strjoin(new_line, "\n");		//new_line free
 		new_line = ft_strjoin(new_line, *line);		//new_line free
 		while ((*line)[i])

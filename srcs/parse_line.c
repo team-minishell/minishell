@@ -325,7 +325,7 @@ t_job		*parse_line(char *original_line)
 	line = escape_line(line);
 	job = create_job(line);
 	set_command(job);
-	test_job(job);
+	//test_job(job);
 
 	return (job);
 }

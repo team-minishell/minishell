@@ -3,6 +3,7 @@
 // 1. 세미콜론(진행중)
 // 2. 파이프
 // 3. 리디렉션 (다시)
+// 4. ctrl-d 누를 시 exit 출력하고 종료
 
 void	clear_screen(void)
 {
