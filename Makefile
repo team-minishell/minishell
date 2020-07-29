@@ -55,7 +55,7 @@ LIBFT_INC = libft/includes
 
 all: make_libft make_obj $(NAME)
 
-$(NAME): make_obj 
+$(NAME):
 	@$(CC) $(CFLAGS) -o $@ ./obj/* -L libft -lft
 	@echo "$(_GREEN)Program '$(NAME)' compiled. $(_END)"
 
