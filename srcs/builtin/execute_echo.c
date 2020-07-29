@@ -43,7 +43,11 @@ int		execute_echo(char **tokens)
 	{
 		i = 1;
 		while(tokens[i])
+		{
 			print_string_without_doublequote(tokens[i++]);
+			if (tokens[i])
+				ft_printf(" ");
+		}
 		ft_printf("\n");
 	}
 	return 0;
