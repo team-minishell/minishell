@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-int		execute_cd(char **tokens, t_env *env)
+int		execute_cd(char **tokens)
 {
 	int		len;
 	t_dict	*home;
 
-	home = find_env(env->envd, "HOME");
+	home = find_env(g_env->envd, "HOME");
 	len = ft_split_len(tokens);
 	if (len == 1)
 	{

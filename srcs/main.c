@@ -29,31 +29,27 @@ void	ft_perror(char *str)
 
 int		main(int argc, char **argv, char **envp)
 {
-	pid_t	pid;
-	t_env	env;
-	t_job	*job;
-	char	*line;
-	char	**tokens;
+	t_main	m;
 
-	pid = 1;
-	env.envd = make_env_to_dict(envp);
-	env.envp = make_dict_to_envp(env.envd);
-	g_env = &env;
+	m.pid = 1;
+	m.env.envd = make_env_to_dict(envp);
+	m.env.envp = make_dict_to_envp(m.env.envd);
+	g_env = &m.env;
 	clear_screen();
 	handle_signal();
 	while (1)
 	{
-		if (pid > 0)
+		if (m.pid > 0)
 		{
 			ft_printf("\033[0;32mminishell> \033[0;0m");
-			if (read_line(0, &line) == 1)
+			if (read_line(0, &m.line) == 1)
 				;
 			else
 			{
-				job = parse_line(line);
+				m.job = parse_line(m.line);
 				// line = parsing(line, env.envd);
-				if (job)
-					execute_job(job, &env);
+				if (m.job)
+					execute_job(m.job);
 			}
 		}
 	}

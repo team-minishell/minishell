@@ -5,11 +5,6 @@
 # include <unistd.h>
 # include <signal.h>
 # include <stdio.h>
-
-/*
-** 에러 처리
-*/
-
 # include <errno.h>
 # include <string.h>
 
@@ -17,104 +12,112 @@
 # define KEY_LEFT		0x0107
 # define KEY_RIGHT		0x0108
 
+/*
+** struct
+*/
+
 typedef struct		s_redirect
 {
-	char				*sign; // > < >>
-	int					save_fd; // fd 원상복구를 위한 저장본
-	char				*filepath; // 목표지점
-	struct s_redirect	*next; // 다음 리디렉션
+	char				*sign;		// > < >>
+	int					save_fd;	// fd 원상복구를 위한 저장본
+	char				*filepath;	// 목표지점
+	struct s_redirect	*next;		// 다음 리디렉션
 }					t_redirect;
 
 typedef struct		s_command
 {
-	char			*cmd; //명령어
-	char			**argv; //인자
-	int				idx; //모름
+	char			*cmd;			//명령어
+	char			**argv;			//인자
+	int				idx;			//모름
 }					t_command;
 
 typedef struct		s_job
 {
-	char			*str; //세미콜론으로 구분된 하나의 문자열
+	char			*str;			//세미콜론으로 구분된 하나의 문자열
 	t_command		command;
 	t_redirect		redirect;
-	struct s_job	*next; //다음 문자열
+	struct s_job	*next;			//다음 문자열
 }					t_job;
 
 typedef struct	s_quote
 {
-	int		sq;
-	int		dq;
+	int		sq;						//작은 따옴표
+	int		dq;						//큰 따옴표
 }				t_quote;
 
 typedef struct		s_dict
 {
-	char			*key;
-	char			*value;
-	struct s_dict	*next;
+	char			*key;			//환경변수의 키 (e.g SHELL)
+	char			*value;			//환경변수의 값 (e.g /bin/zsh)
+	struct s_dict	*next;			//다음 환경변수
 }					t_dict;
 
 typedef struct		s_env
 {
-	char			**envp;
-	t_dict			*envd;
+	char			**envp;			//main함수에서 받은 환경변수로, 2차원 배열임
+	t_dict			*envd;			//main함수에서 받은 2차원 배열 환경변수를 연결리스트로 바꾼 구조체 포인터
 }					t_env;
+
+typedef struct		s_main
+{
+	pid_t			pid;			//minishell의 프로세스 ID
+	t_env			env;			//envp와 envd를 넣어둘 구조체 변수
+	t_job			*job;			//명령어(커맨드)를 세미콜론으로 구분해 저장할 구조체 변수
+	char			*line;			//명령어(커맨드)를 가리키는 포인터
+}					t_main;
+
+/*
+** global variable
+*/
 
 t_env				*g_env;
 
 /*
-** check_builtins.c
+** builtin/execute_cd.c
 */
 
-int					check_builtins(char **tokens, t_env *env);
+int					execute_cd(char **tokens);
+
+/*
+** builtin/execute_echo.c
+*/
+
+int					execute_echo(char **tokens);
+
+/*
+** builtin/execute_env.c
+*/
+
+int					execute_env(char **tokens);
+
+/*
+** builtin/execute_export.c
+*/
+
+int					execute_export(char **tokens);
+
+/*
+** builtin/execute_pwd.c
+*/
+
+int					execute_pwd(char **tokens);
+
+/*
+** builtin/execute_unset.c
+*/
+
+int					execute_unset(char **tokens);
 
 /*
 ** convert_str.c
 */
 
 char				*convert_str(char *base, char *target, char *convert);
-
-/*
-** execute_cd.c
-*/
-
-int					execute_cd(char **tokens, t_env *env);
-
-/*
-** execute_echo.c
-*/
-
-int					execute_echo(char **tokens);
-
-/*
-** execute_env.c
-*/
-
-int					execute_env(char **tokens, t_env *env);
-
-/*
-** execute_export.c
-*/
-
-int					execute_export(char **tokens, t_env *env);
-
-/*
-** execute_pwd.c
-*/
-
-int					execute_pwd(char **tokens);
-
-/*
-** execute_unset.c
-*/
-
-int					execute_unset(char **tokens, t_env *env);
-
 /*
 ** execution.c
 */
 
-int					execution(char *str, t_env *env);
-void				execute_job(t_job *job, t_env *env);
+void				execute_job(t_job *job);
 
 /*
 ** handle_signal.c

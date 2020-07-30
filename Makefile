@@ -61,7 +61,6 @@ $(NAME):
 
 make_obj:
 	@mkdir -p ./obj
-	@$(CC) $(CFLAG) -c ./srcs/builtin/check_builtins.c	-o ./obj/check_builtins.o	-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_cd.c		-o ./obj/execute_cd.o		-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_echo.c	-o ./obj/execute_echo.o		-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_env.c		-o ./obj/execute_env.o		-I $(INC_DIR) -I $(LIBFT_INC)
