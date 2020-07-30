@@ -13,7 +13,9 @@
 # include <errno.h>
 # include <string.h>
 
-# define MALLOC_ERROR 100
+# define MALLOC_ERROR	100
+# define KEY_LEFT		0x0107
+# define KEY_RIGHT		0x0108
 
 typedef struct		s_redirect
 {
