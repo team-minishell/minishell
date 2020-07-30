@@ -1,20 +1,5 @@
 #include "minishell.h"
 
-void	eof_exception(int option, char **line)
-{
-	if (option == 0)
-	{
-		ft_printf("exit\n");
-		exit(0);
-	}
-	if (option == 1)
-	{
-		ft_printf("minishell: unexpected EOF while looking for matching `\'\"\n");
-		ft_printf("minishell: syntax error: unexpected end of file\n");
-		free(*line);
-	}
-}
-
 /*
 ** single quote(')와 double quote(")를 조건에 따라 열고 닫는다.
 ** 닫혀있음 : -1("hello world")
