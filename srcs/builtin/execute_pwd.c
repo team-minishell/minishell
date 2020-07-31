@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-int		execute_pwd(char **tokens)
+int		execute_pwd(t_job *job)
 {
 	char	buf[1024];
 	int		len;
 
-	len = ft_split_len(tokens);
+	len = ft_split_len(job->command.argv);
 	if (len != 1)
 	{
 		ft_printf("pwd: too many arguments\n");

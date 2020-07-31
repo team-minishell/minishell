@@ -53,9 +53,7 @@ char	*parsing(char *line, t_dict *envd)
 		return (NULL);
 	home_dict = find_env(envd, "HOME");
 	converted_line = convert_str(line, "~", home_dict->value);
-
 	converted_line = env_to_str(line, &converted_line, envd);
-	
 	if (converted_line == 0)
 		return (line);
 	printf("line : %s\n", converted_line);

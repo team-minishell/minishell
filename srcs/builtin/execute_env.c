@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int		execute_env(char **tokens)
+int		execute_env(void)
 {
 	t_dict *tmp;
 

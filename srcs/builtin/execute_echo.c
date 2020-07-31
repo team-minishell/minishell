@@ -25,27 +25,27 @@ void	print_string_without_doublequote(char *string)
 	}
 }
 
-int		execute_echo(char **tokens)
+int		execute_echo(t_job *job)
 {
 	int i;
 
-	if (!ft_strcmp("-n", tokens[1]))
+	if (!ft_strcmp("-n", job->command.argv[1]))
 	{
 		i = 2;
-		while(tokens[i])
+		while(job->command.argv[i])
 		{
-			print_string_without_doublequote(tokens[i++]);
-			if (tokens[i])
+			print_string_without_doublequote(job->command.argv[i++]);
+			if (job->command.argv[i])
 				ft_printf(" ");
 		}
 	}
 	else
 	{
 		i = 1;
-		while(tokens[i])
+		while(job->command.argv[i])
 		{
-			print_string_without_doublequote(tokens[i++]);
-			if (tokens[i])
+			print_string_without_doublequote(job->command.argv[i++]);
+			if (job->command.argv[i])
 				ft_printf(" ");
 		}
 		ft_printf("\n");

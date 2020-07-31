@@ -31,7 +31,7 @@ void	execute_unset2(t_dict *tmp, t_dict *before)
 	free(point_to_free);
 }
 
-int		execute_unset(char **tokens)
+int		execute_unset(t_job *job)
 {
 	t_dict	*tmp;
 	t_dict	*point_to_free;
@@ -41,7 +41,7 @@ int		execute_unset(char **tokens)
 	before = NULL;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->key, tokens[1]) == 0)
+		if (ft_strcmp(tmp->key, job->command.argv[1]) == 0)
 		{
 			execute_unset2(tmp, before);
 			break ;

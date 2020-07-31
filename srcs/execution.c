@@ -94,21 +94,24 @@ void	execute_with_envp(char **tokens, char **envp)
 	return (1);
 }*/
 
-int		check_builtins(char **tokens)
+int		check_builtins(t_job *job)
 {
-	if (!ft_strcmp(tokens[0], "pwd"))
-		execute_pwd(tokens);
-	else if (!ft_strcmp(tokens[0], "echo"))
-		execute_echo(tokens);
-	else if (!ft_strcmp(tokens[0], "cd"))
-		execute_cd(tokens);
-	else if (!ft_strcmp(tokens[0], "export"))
-		execute_export(tokens);
-	else if (!ft_strcmp(tokens[0], "unset"))
-		execute_unset(tokens);
-	else if (!ft_strcmp(tokens[0], "env"))
-		execute_env(tokens);
-	else if (!ft_strcmp(tokens[0], "exit"))
+	char *cmd;
+
+	cmd = job->command.cmd;
+	if (!ft_strcmp(cmd, "cd"))
+		execute_cd(job);
+	else if (!ft_strcmp(cmd, "echo"))
+		execute_echo(job);
+	else if (!ft_strcmp(cmd, "env"))
+		execute_env();
+	else if (!ft_strcmp(cmd, "export"))
+		execute_export(job);
+	else if (!ft_strcmp(cmd, "pwd"))
+		execute_pwd(job);
+	else if (!ft_strcmp(cmd, "unset"))
+		execute_unset(job);
+	else if (!ft_strcmp(cmd, "exit"))
 		exit(0);
 	else
 		return (1);
@@ -126,7 +129,7 @@ void	execute_job(t_job *job)
 		if ((job->str)[0] == '\0' || job->str == NULL)
 			exit(MALLOC_ERROR);
 		tokens = job->command.argv; //job->command.argv에는 인자만 들어가야 하는거 아닌가요?
-		if (!check_builtins(tokens))
+		if (!check_builtins(job))
 			;
 		else
 		{

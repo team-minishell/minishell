@@ -12,20 +12,20 @@
 
 #include "minishell.h"
 
-int		execute_export(char **tokens)
+int		execute_export(t_job *job)
 {
 	char	**splits;
 	t_dict	*envd;
 	t_dict	*new;
 
 	envd = g_env->envd;
-	splits = ft_split(tokens[1], '=');
+	splits = ft_split(job->command.argv[1], '=');
 	if (!(new = malloc(sizeof(t_dict) * 1)))
 		exit(MALLOC_ERROR);
 	g_env->envd = new;
 	new->next = envd;
 	new->key = splits[0];
 	new->value = splits[1];
-	free(splits);
-	return (1);
+	ft_split_del(splits);
+	return (0);
 }

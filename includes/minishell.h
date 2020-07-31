@@ -76,37 +76,37 @@ t_env				*g_env;
 ** builtin/execute_cd.c
 */
 
-int					execute_cd(char **tokens);
+int					execute_cd(t_job *job);
 
 /*
 ** builtin/execute_echo.c
 */
 
-int					execute_echo(char **tokens);
+int					execute_echo(t_job *job);
 
 /*
 ** builtin/execute_env.c
 */
 
-int					execute_env(char **tokens);
+int					execute_env(void);
 
 /*
 ** builtin/execute_export.c
 */
 
-int					execute_export(char **tokens);
+int					execute_export(t_job *job);
 
 /*
 ** builtin/execute_pwd.c
 */
 
-int					execute_pwd(char **tokens);
+int					execute_pwd(t_job *job);
 
 /*
 ** builtin/execute_unset.c
 */
 
-int					execute_unset(char **tokens);
+int					execute_unset(t_job *job);
 
 /*
 ** convert_str.c
