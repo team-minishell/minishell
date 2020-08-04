@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void	execute_unset2(t_dict *tmp, t_dict *before, t_env *env)
+void	execute_unset2(t_dict *tmp, t_dict *before)
 {
 	t_dict	*point_to_free;
 
@@ -26,24 +26,24 @@ void	execute_unset2(t_dict *tmp, t_dict *before, t_env *env)
 	else
 	{
 		point_to_free = tmp;
-		env->envd = point_to_free->next;
+		g_env->envd = point_to_free->next;
 	}
 	free(point_to_free);
 }
 
-int		execute_unset(char **tokens, t_env *env)
+int		execute_unset(t_job *job)
 {
 	t_dict	*tmp;
 	t_dict	*point_to_free;
 	t_dict	*before;
 
-	tmp = env->envd;
+	tmp = g_env->envd;
 	before = NULL;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->key, tokens[1]) == 0)
+		if (ft_strcmp(tmp->key, job->command.argv[1]) == 0)
 		{
-			execute_unset2(tmp, before, env);
+			execute_unset2(tmp, before);
 			break ;
 		}
 		before = tmp;

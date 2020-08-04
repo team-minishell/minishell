@@ -1,4 +1,24 @@
-/*#include "minishell.h"
+#include "minishell.h"
+
+// fd[0] 입구, fd[1] 출구
+
+int		execute_pipe_command(t_job *job)
+{
+	int		i;
+	char	**split;
+	char	*tmp;
+
+	i = -1;
+	split = ft_split(job->str, '|');
+	while (split[++i])
+	{
+		tmp = split[i];
+		split[i] = ft_strtrim(split[i], " ");
+		free(tmp);
+	}
+	ft_split_del(split);
+	return (0);
+}
 
 int		check_pipe(t_job *job)
 {
@@ -7,23 +27,6 @@ int		check_pipe(t_job *job)
 	i = 0;
 	while (job->str[i])
 		if (job->str[i++] == '|')
-			__pipe__(job);
+			execute_pipe_command(job);
+	return (0);
 }
-
-// fd[0] 입구, fd[1] 출구
-
-int		__pipe__(t_job *job)
-{
-	int		fd[2];
-	pid_t	pid;
-
-	pipe(fd);
-	if ((pid = fork()) < 0)
-		exit(-1);
-	if (pid == 0)
-	{
-		close(fd[0]);
-		write(fd[1], )
-	}
-}
-*/

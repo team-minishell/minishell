@@ -12,11 +12,11 @@
 
 #include "minishell.h"
 
-int		execute_env(char **tokens, t_env *env)
+int		execute_env(void)
 {
 	t_dict *tmp;
 
-	tmp = env->envd;
+	tmp = g_env->envd;
 	while (tmp)
 	{
 		ft_printf("%s=%s\n", tmp->key, tmp->value);

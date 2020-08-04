@@ -1,18 +1,5 @@
 #include "minishell.h"
 
-void	init_quote(t_quote *q)
-{
-	q->sq = -1;
-	q->dq = -1;
-}
-
-int		is_quote_closed(t_quote *q)
-{
-	if (q->sq == -1 && q->dq == -1)
-		return (1);
-	return (0);
-}
-
 /*
 ** single quote(')와 double quote(")를 조건에 따라 열고 닫는다.
 ** 닫혀있음 : -1("hello world")
@@ -69,6 +56,33 @@ int		is_end_escape(char *line)
 ** line을 읽어오는데 ' 나 "가 있는 경우, 줄 바꿈 문자까지 읽어온다.
 */
 
+int		read_line2(t_quote *q, int fd, char **origin, char **new_line)
+{
+	int		i;
+	char	*tmp;//new_line free 할때 사용하면 될듯
+	char	*line;
+	
+	line = *origin;
+	while (!(q->sq == -1 && q->dq == -1) || is_end_escape(line))
+	{
+		i = 0;
+		ft_printf("> ");
+		if (get_next_line(fd, &line) == 0)
+		{
+			ft_printf("minishell: unexpected EOF while looking for matching `\'\"\n");
+			ft_printf("minishell: syntax error: unexpected end of file\n");
+			free(line);
+			return (1);
+		}
+		*new_line = ft_strjoin(*new_line, "\n");		//new_line free
+		*new_line = ft_strjoin(*new_line, line);		//new_line free
+		while (line[i])
+			check_quote(q, line, i++);
+		free(line);
+	}
+	return (0);
+}
+
 int		read_line(int fd, char **line)
 {
 	int		i;
@@ -76,29 +90,20 @@ int		read_line(int fd, char **line)
 	char	*new_line;
 
 	i = 0;
-	get_next_line(fd, line);
-	if (line[0] == EOF)
+	if (get_next_line(fd, line) == 0)
 	{
 		ft_printf("exit\n");
 		exit(0);
 	}
-	init_quote(&q);
+	q.dq = -1;
+	q.sq = -1;
 	new_line = ft_strdup("");
 	new_line = ft_strjoin(new_line, *line); // ft_strjoin_free_s1();
 	while ((*line)[i])
 		check_quote(&q, *line, i++);
 	free(*line);
-	while (!is_quote_closed(&q) || is_end_escape(*line))
-	{
-		i = 0;
-		ft_printf("> ");
-		get_next_line(fd, line);
-		new_line = ft_strjoin(new_line, "\n");		//new_line free
-		new_line = ft_strjoin(new_line, *line);		//new_line free
-		while ((*line)[i])
-			check_quote(&q, *line, i++);
-		free(*line);
-	}
+	if (read_line2(&q, fd, line, &new_line))
+		return (1);
 	*line = new_line;
 	return (0);
 }

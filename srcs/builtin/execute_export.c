@@ -12,39 +12,20 @@
 
 #include "minishell.h"
 
-/*
-** use ft_split_del
-*/
-
-/*void	free_envp(char **envp)
-{
-	int		i;
-
-	i = 0;
-	while (envp[i])
-	{
-		free(envp[i]);
-		i++;
-	}
-	free(envp);
-}*/
-
-int		execute_export(char **tokens, t_env *env)
+int		execute_export(t_job *job)
 {
 	char	**splits;
 	t_dict	*envd;
 	t_dict	*new;
 
-	envd = env->envd;
-	// if (!(is_valid_token(tokens[1])))
-	// 	ft_printf("")
-	splits = ft_split(tokens[1], '=');
+	envd = g_env->envd;
+	splits = ft_split(job->command.argv[1], '=');
 	if (!(new = malloc(sizeof(t_dict) * 1)))
 		exit(MALLOC_ERROR);
-	env->envd = new;
+	g_env->envd = new;
 	new->next = envd;
 	new->key = splits[0];
 	new->value = splits[1];
-	free(splits);
-	return (1);
+	ft_split_del(splits);
+	return (0);
 }
