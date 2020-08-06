@@ -43,96 +43,6 @@ int			have_next(char *line)
 }
 
 /*
-** splits_except_quote.c
-** 기존 ft_split과 같은데, 따옴표 안에 있는 문자는 무시한다.
-*/
-
-typedef struct	s_split
-{
-	int		i;
-	int		start;
-	int		len;
-	int		split_idx;
-}				t_split;
-
-/*
-** split 구조체 초기화
-*/
-
-void		init_split(t_split *spt)
-{
-	spt->i = 0;
-	spt->len = 0;
-	spt->start = 0;
-	spt->split_idx = 0;
-}
-
-int			get_split_len(char *str, char c)
-{
-	int		i;
-	int		ret;
-	t_quote	q;
-
-	i = 0;
-	ret = 0;
-	q.dq = -1;
-	q.sq = -1;
-	while (str[i])
-	{
-		check_quote(&q, str, i);
-		if (str[i] == c && (q.sq == -1 && q.dq == -1))
-			ret++;
-		i++;
-	}
-	return (ret);
-}
-
-char		**malloc_splits(char *str, char c)
-{
-	char	**splits;
-	int		split_len;
-
-	split_len = get_split_len(str, c);
-	if (!(splits = (char **)malloc(sizeof(char *) * (split_len + 2))))
-		exit(MALLOC_ERROR);
-	splits[split_len + 1] = NULL;
-	return (splits);
-}
-
-char		**split_except_quote(char *str, char c)
-{
-	char	**splits;
-	t_quote	q;
-	t_split	sp;
-
-	init_split(&sp);
-	splits = malloc_splits(str, c);
-	q.dq = -1;
-	q.sq = -1;
-	while (str[sp.i])
-	{
-		sp.len++;
-		check_quote(&q, str, sp.i);
-		if ((str[sp.i] == c && (q.sq == -1 && q.dq == -1)) \
-		|| str[sp.i + 1] == '\0')
-		{
-			splits[sp.split_idx] = ft_strdup(&str[sp.start]);
-			ft_strlcpy(splits[sp.split_idx], &str[sp.start], sp.len + 1);
-			sp.split_idx++;
-			sp.len = 0;
-			sp.start = sp.i + 1;
-		}
-		sp.i++;
-	}
-	splits[sp.split_idx] = NULL;
-	return (splits);
-}
-
-/*
-** split_except_quote.c		end
-*/
-
-/*
 ** create_job.c
 ** 들어온 문자열을 ';' 단위로 나누어서, job->str에 저장한다.
 */
@@ -180,7 +90,7 @@ t_job		*create_job(char *line)
 ** 2. 앞뒤 공백을 제거 (ft_strtrim)
 ** 3. 따옴표에 따라 환경변수를 치환 (convert_env)
 ** 4. 따옴표 제거 (delete_quote)
-** 5. command.cmd와 command.argv에 올바른 값을 넣는다.
+** 5. command->cmd와 command->argv에 올바른 값을 넣는다.
 */
 
 char		*convert_env(char *str)
@@ -206,20 +116,6 @@ char		*convert_env(char *str)
 			free(str);
 			str = ret;
 		}
-		/*
-		else if (str[i] == '$' && str[i + 1] == '(')
-		{
-			key = ft_strchr(&str[i], (int)')');
-			if (key)
-			{
-				key = ft_strdup(str);
-				ft_strlcpy(key, &str[i], (int)(&str[i] - ft_strchr(&str[i], (int)')') + 1));
-				value = find_value_in_dict(g_env->envd, key);
-				target = ft_strjoin("$(")
-				ret = convert_str(str, target, value);
-			}
-		}
-		*/
 		i++;
 	}
 	return (ret);
@@ -266,7 +162,7 @@ void		set_command(t_job *job)
 
 	while (job)
 	{
-		command = &(job->command);
+		command = job->command;
 		if ((job->str)[0] == '\0')
 		{
 			job = job->next;
@@ -291,6 +187,10 @@ void		set_command(t_job *job)
 */
 
 /*
+** set_pipe.c
+*/
+
+/*
 ** 1. line을 ';'으로 구분해서 job을 나눈다.
 ** 2. 각 job의 redirection을 설정한다.
 ** 3. 각 job을 ' '로 구분해서 cmd와 argv로 구분한다.
@@ -305,10 +205,10 @@ void		test_job(t_job *job)
 	{
 		i = 0;
 		ft_printf("job: %s$\n", job->str);
-		ft_printf("cmd: %s$\n", job->command.cmd);
-		while (((job->command).argv)[i])
+		ft_printf("cmd: %s$\n", job->command->cmd);
+		while (((job->command)->argv)[i])
 		{
-			ft_printf("argv[%d]: %s$\n", i, ((job->command).argv)[i]);
+			ft_printf("argv[%d]: %s$\n", i, ((job->command)->argv)[i]);
 			i++;
 		}
 		job = job->next;
@@ -320,13 +220,14 @@ t_job		*parse_line(char *original_line)
 {
 	t_job		*job;
 	char		*line;
-	char		**jobs;
 
 	if (original_line == 0 || *original_line == 0)
 		return (0);
 	line = ft_strdup(original_line);
 	line = escape_line(line);
 	job = create_job(line);
+	// set_pipe;
+	// set_redirect;
 	set_command(job);
 	//test_job(job);
 

@@ -6,7 +6,7 @@
 #    By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/28 06:15:21 by yochoi            #+#    #+#              #
-#    Updated: 2020/07/23 20:34:16 by nahangyeol       ###   ########.fr        #
+#    Updated: 2020/08/06 19:36:03 by nahangyeol       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -61,21 +61,23 @@ $(NAME):
 
 make_obj:
 	@mkdir -p ./obj
-	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_cd.c		-o ./obj/execute_cd.o		-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_echo.c	-o ./obj/execute_echo.o		-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_env.c		-o ./obj/execute_env.o		-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_export.c	-o ./obj/execute_export.o	-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_pwd.c		-o ./obj/execute_pwd.o		-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_unset.c	-o ./obj/execute_unset.o	-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/convert_str.c				-o ./obj/convert_str.o		-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/execution.c				-o ./obj/execution.o		-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/handle_signal.c			-o ./obj/handle_signal.o	-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/main.c					-o ./obj/main.o				-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/manage_list.c				-o ./obj/manage_list.o		-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/parse_line.c				-o ./obj/parse_line.o		-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/parsing.c					-o ./obj/parsing.o			-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/pipe.c					-o ./obj/pipe.o				-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/read_line.c				-o ./obj/read_line.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_cd.c			-o ./obj/execute_cd.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_echo.c		-o ./obj/execute_echo.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_env.c			-o ./obj/execute_env.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_export.c		-o ./obj/execute_export.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_pwd.c			-o ./obj/execute_pwd.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_unset.c		-o ./obj/execute_unset.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/utils/split_except_quote.c	-o ./obj/split_except_quote.o	-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/convert_str.c					-o ./obj/convert_str.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/execution.c					-o ./obj/execution.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/handle_signal.c				-o ./obj/handle_signal.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/main.c						-o ./obj/main.o					-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/manage_list.c					-o ./obj/manage_list.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/parse_line.c					-o ./obj/parse_line.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/parsing.c						-o ./obj/parsing.o				-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/pipe.c						-o ./obj/pipe.o					-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/read_line.c					-o ./obj/read_line.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/redirect.c					-o ./obj/redirect.o				-I $(INC_DIR) -I $(LIBFT_INC)
 
 make_libft:
 	@make -C libft

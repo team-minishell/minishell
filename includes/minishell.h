@@ -9,8 +9,6 @@
 # include <string.h>
 
 # define MALLOC_ERROR	100
-# define KEY_LEFT		0x0107
-# define KEY_RIGHT		0x0108
 
 /*
 ** struct
@@ -18,7 +16,7 @@
 
 typedef struct		s_redirect
 {
-	char				*sign;		// > < >>
+	int					sign;		// (1. >) (2. <) (3. >>)
 	int					save_fd;	// fd 원상복구를 위한 저장본
 	char				*filepath;	// 목표지점
 	struct s_redirect	*next;		// 다음 리디렉션
@@ -34,16 +32,16 @@ typedef struct		s_command
 typedef struct		s_job
 {
 	char			*str;			//세미콜론으로 구분된 하나의 문자열
-	t_command		command;
+	t_command		*command;		//pipe처리시 command는 배열로 올 수 있음.
 	t_redirect		redirect;
 	struct s_job	*next;			//다음 문자열
 }					t_job;
 
-typedef struct	s_quote
+typedef struct		s_quote
 {
-	int		sq;						//작은 따옴표
-	int		dq;						//큰 따옴표
-}				t_quote;
+	int				sq;				//작은 따옴표
+	int				dq;				//큰 따옴표
+}					t_quote;
 
 typedef struct		s_dict
 {
@@ -109,6 +107,12 @@ int					execute_pwd(t_job *job);
 int					execute_unset(t_job *job);
 
 /*
+** utils/split_except_quote.c
+*/
+
+char				**split_except_quote(char *str, char c);
+
+/*
 ** convert_str.c
 */
 
@@ -165,4 +169,10 @@ int					read_line(int fd, char **line);
 void				init_quote(t_quote *q);
 int					is_quote_closed(t_quote *q);
 void				check_quote(t_quote *q, char *line, int i);
+
+/*
+** redirect.c
+*/
+
+int					check_redirect(t_job *job);
 #endif

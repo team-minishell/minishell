@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_unset.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 21:26:06 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/19 06:44:40 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/08/06 23:38:59 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		execute_unset(t_job *job)
 	before = NULL;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->key, job->command.argv[1]) == 0)
+		if (ft_strcmp(tmp->key, job->command->argv[1]) == 0)
 		{
 			execute_unset2(tmp, before);
 			break ;

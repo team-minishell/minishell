@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 19:53:10 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/25 22:04:34 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/06 23:39:59 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,35 +70,11 @@ void	execute_with_envp(char **tokens, char **envp)
 ** 명령어를 실행함
 */
 
-/*int		execution(char *str, t_env *env)
-{
-	pid_t	pid;
-	char	**tokens;
-	int		status;
-
-	// check_pipe
-	tokens = ft_split(str, ' ');
-	if (!check_builtins(tokens, env))
-		;
-	else
-	{
-		pid = fork();
-		if (pid == 0)								이제 안쓸 함순가요?
-		{
-			execute_with_envp(tokens, env->envp);
-			exit(0);
-		}
-		waitpid(pid, &status, 0);
-	}
-	ft_split_del(tokens);
-	return (1);
-}*/
-
 int		check_builtins(t_job *job)
 {
 	char *cmd;
 
-	cmd = job->command.cmd;
+	cmd = job->command->cmd;
 	if (!ft_strcmp(cmd, "cd"))
 		execute_cd(job);
 	else if (!ft_strcmp(cmd, "echo"))
@@ -118,6 +94,47 @@ int		check_builtins(t_job *job)
 	return (0);
 }
 
+/////
+int		spawn_proc(int in, int out, t_command *cmd)
+{
+	pid_t	pid;
+
+	if ((pid = fork()) == 0)
+	{
+		if (in != 0) // 3. in으로 설정한 값이 파이프 출구라면, 파이프 출구를 표준 입력으로 받는다.
+		{
+			dup2(in, 0);	// in = 파이프 출구 = 표준입력 // write(0, ...)
+			close(in);		// fd 절약, 어차피 fd 0번만 쓰기때문에 기존 fd는 닫아도 된다.
+		}
+		if (out != 1) // 4. out으로 설정한 값이 파이프 입구라면, 파이프 입구와 표준출력을 연결한다.
+		{
+			dup2(out, 1);	// out = 파이프 입구 = 표준출력 // write(1, ...)
+			close(out);
+		}
+		return execvp(cmd->argv[0], (char *const *)cmd->argv);	// 5. write(1, buffer, ...)방식의 출력 결과가, fd 1이 가리키는 곳으로 향한다. (파이프 입구 또는 표준 출력)
+	}	// 	결과가 파이프의 입력으로 들어감.
+	return (pid);
+}
+int		fork_pipes(int n, t_command *cmd)
+{
+	int		i;
+	pid_t	pid;
+	int		in, fd[2];
+
+	in = 0; // 1. 맨처음엔 표준입력(0)을 입력으로 받는다.
+	i = -1;
+	while (++i < n - 1)
+	{
+		pipe(fd);
+		spawn_proc(in, fd[1], cmd + i); // 2. 표준 입력(0)과 파이프 입구가 각각 in, out이 된다.(out 되는 값이 다시 파이프 입구에 들어가야하기 때문에) // 6. 파이프의 출구(fd[0])로 실행결과가 넘어온다.
+		close(fd[1]); // 어차피 부모 프로세스에서는 파이프로 보낼게 없으므로, 부모 프로세서에서의 파이프 입구는 닫아둔다.
+		in = fd[0]; // 7. 파이프의 출구를 다시 in과 연결한다.
+	}
+	pid = spawn_proc(in, 1, cmd + i);
+	return (pid);
+}
+////
+
 void	execute_job(t_job *job)
 {
 	pid_t	pid;
@@ -128,17 +145,18 @@ void	execute_job(t_job *job)
 	{
 		if ((job->str)[0] == '\0' || job->str == NULL)
 			exit(MALLOC_ERROR);
-		tokens = job->command.argv; //job->command.argv에는 인자만 들어가야 하는거 아닌가요?
-		if (!check_builtins(job))
+		tokens = job->command->argv;
+		if (!check_redirect(job) || !check_builtins(job))
 			;
 		else
 		{
-			pid = fork();
-			if (pid == 0)
-			{
-				execute_with_envp(tokens, g_env->envp);
-				exit(0);
-			}
+			// pid = fork();
+			// if (pid == 0)
+			// {
+			// 	execute_with_envp(tokens, g_env->envp);
+			// 	exit(0);
+			// }
+			pid = fork_pipes(1, job->command);
 			waitpid(pid, &status, 0);
 		}
 		job = job->next;
