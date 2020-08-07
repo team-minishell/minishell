@@ -1,12 +1,8 @@
 #include "minishell.h"
 
-void		init_job(t_job **job)
-{
-	if (!(*job = malloc(sizeof(t_job))))
-		exit(MALLOC_ERROR);
-	(*job)->str = 0;
-	(*job)->next = 0;
-}
+/*
+** escape 기호 처리
+*/
 
 char		*escape_line(char *line)
 {
@@ -40,46 +36,6 @@ int			have_next(char *line)
 			return (1);
 	}
 	return (0);
-}
-
-/*
-** create_job.c
-** 들어온 문자열을 ';' 단위로 나누어서, job->str에 저장한다.
-*/
-
-t_job		*malloc_job(void)
-{
-	t_job	*job;
-
-	if (!(job = malloc(sizeof(t_job) * 1)))
-		exit(MALLOC_ERROR);
-	init_job(&job);
-	return (job);
-}
-
-t_job		*create_job(char *line)
-{
-	t_job	*job;
-	t_job	*first;
-	char	**splits;
-	int		i;
-
-	i = 0;
-	job = malloc_job();
-	first = job;
-	splits = split_except_quote(line, ';');
-	while (splits[i])
-	{
-		job->str = ft_strtrim(splits[i], " ;");
-		if (splits[i + 1] != NULL)
-			job->next = malloc_job();
-		else
-			job->next = NULL;
-		i++;
-		job = job->next;
-	}
-	ft_split_del(splits);
-	return (first);
 }
 
 /*
@@ -155,66 +111,89 @@ char		*ft_strtrim_free_s1(char *s1, char *set)
 
 void		set_command(t_job *job)
 {
-	t_command	*command;
 	char		**splits;
+	char		**cmds;
 	char		*str;
 	int			i;
 
 	while (job)
 	{
-		command = job->command;
 		if ((job->str)[0] == '\0')
 		{
 			job = job->next;
 			continue;
 		}
-		splits = split_except_quote(job->str, ' ');
-		i = 0;
-		while (splits[i])
+		// 1. 파이프 나누기
+		// 2. 파이프 개수 파악
+		// 3. command malloc
+		// 4. 분리 후 각각 argv화
+		// set_pipe();
+		cmds = split_except_quote(job->str, '|');
+		int		n;
+		n = 0;
+		while (cmds[n])
 		{
-			splits[i] = ft_strtrim_free_s1(splits[i], " ");
-			splits[i] = delete_quote_convert_env(splits[i]);
-			i++;
+			cmds[n] = ft_strtrim_free_s1(cmds[n], " |");
+			n++;
 		}
-		command->cmd = splits[0];
-		command->argv = splits;
+		job->command = malloc(sizeof(t_command) * n);
+		job->command->idx = n;
+		// set_argv(idx, cmds);
+		n = 0;
+		while (n < job->command->idx)
+		{
+			i = 0;
+			splits = split_except_quote(cmds[n], ' ');
+			while (splits[i])
+			{
+				splits[i] = ft_strtrim_free_s1(splits[i], " ");
+				splits[i] = delete_quote_convert_env(splits[i]);
+				i++;
+			}
+			((job->command) + n)->cmd = splits[0];
+			((job->command) + n)->argv = splits;
+			n++;
+		}
 		job = job->next;
 	}
 }
 
-/*
-** set_command.c	end
-*/
-
-/*
-** set_pipe.c
-*/
-
-/*
-** 1. line을 ';'으로 구분해서 job을 나눈다.
-** 2. 각 job의 redirection을 설정한다.
-** 3. 각 job을 ' '로 구분해서 cmd와 argv로 구분한다.
-*/
-
 void		test_job(t_job *job)
 {
 	int		i;
+	int		n;
+	char	**argv;
 
 	ft_printf("========job struct test========\n");
 	while (job)
 	{
 		i = 0;
 		ft_printf("job: %s$\n", job->str);
-		ft_printf("cmd: %s$\n", job->command->cmd);
-		while (((job->command)->argv)[i])
+		// ft_printf("=====command=====\n");
+		ft_printf("job->command->idx: %d$\n", job->command->idx);
+		while (i < job->command->idx)
 		{
-			ft_printf("argv[%d]: %s$\n", i, ((job->command)->argv)[i]);
+			ft_printf("\tcommand[%d]\n", i);
+			n = 0;
+			argv = ((job->command) + i)->argv;
+			while (argv[n])
+			{
+				ft_printf("\t\targv[%d]:%s$\n", n, argv[n]);
+				n++;
+			}
 			i++;
 		}
+		// ft_printf("cmd: %s$\n", ((job->command) + i)->cmd);
 		job = job->next;
 	}
 	ft_printf("================================\n");
 }
+
+/*
+** 1. line을 ';'으로 구분해서 job을 나눈다.
+** 2. 각 job의 redirection을 설정한다.
+** 3. 각 job을 ' '로 구분해서 cmd와 argv로 구분한다.
+*/
 
 t_job		*parse_line(char *original_line)
 {
@@ -229,7 +208,7 @@ t_job		*parse_line(char *original_line)
 	// set_pipe;
 	// set_redirect;
 	set_command(job);
-	//test_job(job);
+	// test_job(job);
 
 	return (job);
 }

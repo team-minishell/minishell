@@ -152,6 +152,12 @@ char				*find_value_in_dict(t_dict *envd, char *key);
 t_job				*parse_line(char *line);
 
 /*
+** create_job.c
+*/
+
+t_job				*create_job(char *line);
+
+/*
 ** parsing.c
 */
 

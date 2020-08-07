@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 19:53:10 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/06 23:39:59 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/07 19:50:16 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ int		check_builtins(t_job *job)
 	return (0);
 }
 
-/////
 int		spawn_proc(int in, int out, t_command *cmd)
 {
 	pid_t	pid;
@@ -150,13 +149,7 @@ void	execute_job(t_job *job)
 			;
 		else
 		{
-			// pid = fork();
-			// if (pid == 0)
-			// {
-			// 	execute_with_envp(tokens, g_env->envp);
-			// 	exit(0);
-			// }
-			pid = fork_pipes(1, job->command);
+			pid = fork_pipes(job->command->idx, job->command);
 			waitpid(pid, &status, 0);
 		}
 		job = job->next;
