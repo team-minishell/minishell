@@ -208,7 +208,7 @@ t_job		*parse_line(char *original_line)
 	// set_pipe;
 	// set_redirect;
 	set_command(job);
-	// test_job(job);
+	test_job(job);
 
 	return (job);
 }

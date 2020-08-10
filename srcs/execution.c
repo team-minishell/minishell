@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 19:53:10 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/07 19:50:16 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/10 12:49:41 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,51 @@ int		check_builtins(t_job *job)
 	return (0);
 }
 
+/*
+**
+*/
+
+int		reset_redirect(t_job *job)
+{
+	t_redirect	*redi;
+
+	redi = job->redirect;
+	if (!redi && redi->sign == 0)
+	{
+		dup2(redi->save_fd, 1);
+		close(redi->save_fd);
+	}
+	return (0);
+}
+
+int		set_redirect(t_job *job)
+{
+	int			fd;
+	t_redirect	*redi;
+
+	redi = job->redirect;
+	if (!redi)
+		return (0);
+	if (redi->sign == RIGHT_ARROW)
+	{
+		redi->save_fd = dup(1);
+		fd = open(redi->filepath, O_CREAT | O_RDWR);
+		dup2(fd, 1);
+		close(fd);
+	}
+	return (0);
+}
+
+/*
+** fork_pipe.c
+*/
+
 int		spawn_proc(int in, int out, t_command *cmd)
 {
+	int		i;
+	char	**paths;
+	char	*temp_path;
+	char	*full_path;
 	pid_t	pid;
 
 	if ((pid = fork()) == 0)
@@ -110,10 +153,23 @@ int		spawn_proc(int in, int out, t_command *cmd)
 			dup2(out, 1);	// out = 파이프 입구 = 표준출력 // write(1, ...)
 			close(out);
 		}
-		return execvp(cmd->argv[0], (char *const *)cmd->argv);	// 5. write(1, buffer, ...)방식의 출력 결과가, fd 1이 가리키는 곳으로 향한다. (파이프 입구 또는 표준 출력)
+		paths = get_paths_from_envp(g_env->envp);
+		i = 0;
+		while (paths[i])
+		{
+			temp_path = ft_strjoin(paths[i], "/");
+			full_path = ft_strjoin(temp_path, cmd->argv[0]);
+			free(temp_path);
+			execve(full_path, (char *const *)cmd->argv, g_env->envp); // 5. write(1, buffer, ...)방식의 출력 결과가, fd 1이 가리키는 곳으로 향한다. (파이프 입구 또는 표준 출력)
+			i++;
+		}
+		if (errno)
+			ft_perror(cmd->argv[0]);
+		exit(0);
 	}	// 	결과가 파이프의 입력으로 들어감.
 	return (pid);
 }
+
 int		fork_pipes(int n, t_command *cmd)
 {
 	int		i;
@@ -132,7 +188,6 @@ int		fork_pipes(int n, t_command *cmd)
 	pid = spawn_proc(in, 1, cmd + i);
 	return (pid);
 }
-////
 
 void	execute_job(t_job *job)
 {
@@ -145,12 +200,15 @@ void	execute_job(t_job *job)
 		if ((job->str)[0] == '\0' || job->str == NULL)
 			exit(MALLOC_ERROR);
 		tokens = job->command->argv;
-		if (!check_redirect(job) || !check_builtins(job))
+		if (!check_builtins(job))
 			;
 		else
 		{
+			// check_redirect();
+			// set_redirect(job);
 			pid = fork_pipes(job->command->idx, job->command);
 			waitpid(pid, &status, 0);
+			// reset_redirect(job);
 		}
 		job = job->next;
 	}

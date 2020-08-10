@@ -4,7 +4,7 @@
 #define LEFT_ARROW 2
 #define DOUBLE_ARROW 3
 
-int		execute_redirect(t_job *job, char **split)
+/*int		execute_redirect(t_job *job, char **split)
 {
 	int		fd;
 
@@ -14,33 +14,48 @@ int		execute_redirect(t_job *job, char **split)
 		fd = open(job->redirect.filepath, O_RDWR | O_CREAT | O_APPEND);
 	job->redirect.save_fd = dup(STDOUT_FILENO);
 	dup2(fd, STDOUT_FILENO);
-	// 함수 싫행부분
+	fork_pipes(echo, hello);
 	dup2(job->redirect.save_fd, STDOUT_FILENO);
 	return (0);
-}
-
+}*/
+// echo a > b.txt > c.txt
 int		redirect_parsing(t_job *job)
 {
+	char	*str;
 	int		i;
-	char	*tmp;
-	char	**split;
+	int		j;
+	char	tmp[1000];
 
-	if (job->redirect.sign == RIGHT_ARROW)
-		split = ft_split(job->str, '>');
-	else if (job->redirect.sign == LEFT_ARROW)
-		split = ft_split(job->str, '<');
-	else if (job->redirect.sign == DOUBLE_ARROW)
-		; //미정
-	i = -1;
-	while (split[++i])
+	str = job->str;
+	i = 0;
+	ft_bzero(tmp, 1000);
+	job->redirect = (t_redirect *)malloc(sizeof(t_redirect));
+	while (str[i])
 	{
-		tmp = split[i];
-		split[i] = ft_strtrim(split[i], " ");
-		free(tmp);
+		if (str[i] == '>' || str[i] == '<')
+		{
+			if (str[i] == '>' && str[i + 1] == '>')
+			{
+				job->redirect->sign = DOUBLE_ARROW;
+				i++;
+			}
+			else if (str[i] == '>')
+				job->redirect->sign = RIGHT_ARROW;
+			else if (str[i] == '<')
+				job->redirect->sign = LEFT_ARROW;
+			i++;
+			j = 0;
+			while (str[i] != '<' && str[i] != '>')
+			{
+				tmp[j] = str[i];
+				i++;
+				j++;
+			}
+			job->redirect->filepath = ft_strdup(tmp);
+		}
+		else
+			i++;
 	}
-	job->redirect.filepath = ft_strdup(split[i - 1]);
-	execute_redirect(job, split);
-	ft_split_del(split);
 	return (0);
 }
 
@@ -55,22 +70,10 @@ int		check_redirect(t_job *job)
 	{
 		if (str[i] == '>' || str[i] == '<')
 		{
-			if (str[i] == '<')
-				job->redirect.sign = LEFT_ARROW;
-			else if (str[i + 1] == '>')
-				job->redirect.sign = DOUBLE_ARROW;
-			else if (str[i] == '>')
-				job->redirect.sign = RIGHT_ARROW;
-			else
-			{
-				ft_printf("error\n");
-				return (0);
-			}
 			redirect_parsing(job);
-			free(job->redirect.filepath);
 			return (0);
 		}
 		i++;
 	}
-	return (1);
+	return (0);
 }

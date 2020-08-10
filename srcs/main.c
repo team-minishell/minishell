@@ -50,6 +50,7 @@ int		main(int argc, char **argv, char **envp)
 				// line = parsing(line, env.envd);
 				if (m.job)
 					execute_job(m.job);
+				free(m.job);
 			}
 		}
 	}

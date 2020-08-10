@@ -6,7 +6,7 @@
 #    By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/28 06:15:21 by yochoi            #+#    #+#              #
-#    Updated: 2020/08/07 19:45:27 by nahangyeol       ###   ########.fr        #
+#    Updated: 2020/08/07 21:00:55 by nahangyeol       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -68,6 +68,7 @@ make_obj:
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_pwd.c			-o ./obj/execute_pwd.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_unset.c		-o ./obj/execute_unset.o		-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/utils/split_except_quote.c	-o ./obj/split_except_quote.o	-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/utils/split_double_arrow.c	-o ./obj/split_double_arrow.o	-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/convert_str.c					-o ./obj/convert_str.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/create_job.c					-o ./obj/create_job.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/execution.c					-o ./obj/execution.o			-I $(INC_DIR) -I $(LIBFT_INC)

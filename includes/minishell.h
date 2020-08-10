@@ -10,6 +10,10 @@
 
 # define MALLOC_ERROR	100
 
+# define RIGHT_ARROW	1
+# define LEFT_ARROW		2
+# define DOUBLE_ARROW	3
+
 /*
 ** struct
 */
@@ -33,7 +37,7 @@ typedef struct		s_job
 {
 	char			*str;			//세미콜론으로 구분된 하나의 문자열
 	t_command		*command;		//pipe처리시 command는 배열로 올 수 있음.
-	t_redirect		redirect;
+	t_redirect		*redirect;
 	struct s_job	*next;			//다음 문자열
 }					t_job;
 
@@ -107,6 +111,13 @@ int					execute_pwd(t_job *job);
 int					execute_unset(t_job *job);
 
 /*
+** utils/split_double_arrow.c
+*/
+
+char				**split_double_arrow(char *str);
+
+
+/*
 ** utils/split_except_quote.c
 */
 
@@ -122,6 +133,7 @@ char				*convert_str(char *base, char *target, char *convert);
 */
 
 void				execute_job(t_job *job);
+int					check_builtins(t_job *job);
 
 /*
 ** handle_signal.c
