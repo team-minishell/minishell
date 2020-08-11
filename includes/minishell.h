@@ -29,15 +29,16 @@ typedef struct		s_redirect
 typedef struct		s_command
 {
 	char			*cmd;			//명령어
+	char			*line;
 	char			**argv;			//인자
-	int				idx;			//모름
+	t_redirect		*redirect;
+	int				idx;			//커맨드 갯수
 }					t_command;
 
 typedef struct		s_job
 {
 	char			*str;			//세미콜론으로 구분된 하나의 문자열
 	t_command		*command;		//pipe처리시 command는 배열로 올 수 있음.
-	t_redirect		*redirect;
 	struct s_job	*next;			//다음 문자열
 }					t_job;
 
@@ -111,11 +112,14 @@ int					execute_pwd(t_job *job);
 int					execute_unset(t_job *job);
 
 /*
-** utils/split_double_arrow.c
+** utils/manage_list.c
 */
 
-char				**split_double_arrow(char *str);
-
+int					dict_size(t_dict *dict);
+t_dict				*make_env_to_dict(char **envp);
+char				**make_dict_to_envp(t_dict *envd);
+t_dict				*find_env(t_dict *envd, char *key);
+char				*find_value_in_dict(t_dict *envd, char *key);
 
 /*
 ** utils/split_except_quote.c
@@ -147,15 +151,6 @@ int					handle_signal(void);
 
 void				ft_perror(char *str);
 
-/*
-** manage_list.c
-*/
-
-int					dict_size(t_dict *dict);
-t_dict				*make_env_to_dict(char **envp);
-char				**make_dict_to_envp(t_dict *envd);
-t_dict				*find_env(t_dict *envd, char *key);
-char				*find_value_in_dict(t_dict *envd, char *key);
 
 /*
 ** parser_line.c

@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 19:53:10 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/10 12:49:41 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/10 19:52:08 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,41 +95,6 @@ int		check_builtins(t_job *job)
 }
 
 /*
-**
-*/
-
-int		reset_redirect(t_job *job)
-{
-	t_redirect	*redi;
-
-	redi = job->redirect;
-	if (!redi && redi->sign == 0)
-	{
-		dup2(redi->save_fd, 1);
-		close(redi->save_fd);
-	}
-	return (0);
-}
-
-int		set_redirect(t_job *job)
-{
-	int			fd;
-	t_redirect	*redi;
-
-	redi = job->redirect;
-	if (!redi)
-		return (0);
-	if (redi->sign == RIGHT_ARROW)
-	{
-		redi->save_fd = dup(1);
-		fd = open(redi->filepath, O_CREAT | O_RDWR);
-		dup2(fd, 1);
-		close(fd);
-	}
-	return (0);
-}
-
-/*
 ** fork_pipe.c
 */
 
@@ -170,6 +135,56 @@ int		spawn_proc(int in, int out, t_command *cmd)
 	return (pid);
 }
 
+/*
+** redirect
+
+
+int		set_redirect(t_redirect *redirect)
+{
+	int		fd;
+	int		target_fd;
+
+	while (redirect)
+	{
+		target_fd = (redirect->sign == LEFT_ARROW) ? 0 : 1;
+		if (redirect->sign == RIGHT_ARROW)
+			fd = open(redirect->filepath, O_CREAT | O_WRONLY, 0777);
+		else if (redirect->sign == DOUBLE_ARROW)
+			fd = open(redirect->filepath, O_APPEND);
+		else if (redirect->sign == LEFT_ARROW)
+			fd = open(redirect->filepath, O_RDONLY);
+		else
+		{
+			ft_perror("redirection sign error\n");
+			return (-1);
+		}
+		if (fd < 0 || errno)
+		{
+			ft_perror(strerror(errno));
+			return (-1);
+		}
+		redirect->save_fd = dup(target_fd);
+		dup2(fd, target_fd);
+		redirect = redirect->next;
+	}
+	return (0);
+}
+
+int		reset_redirect(t_redirect *redirect)
+{
+	int		target_fd;
+
+	target_fd = (redirect->sign == LEFT_ARROW) ? 0 : 1;
+	if (target_fd < 0 || redirect == 0)
+	{
+		ft_perror("reset_redirect error\n");
+		return (-1);
+	}
+	dup2(redirect->save_fd, target_fd);
+	return (0);
+}
+*/
+
 int		fork_pipes(int n, t_command *cmd)
 {
 	int		i;
@@ -178,6 +193,7 @@ int		fork_pipes(int n, t_command *cmd)
 
 	in = 0; // 1. 맨처음엔 표준입력(0)을 입력으로 받는다.
 	i = -1;
+	// set_redirect()
 	while (++i < n - 1)
 	{
 		pipe(fd);
@@ -185,6 +201,7 @@ int		fork_pipes(int n, t_command *cmd)
 		close(fd[1]); // 어차피 부모 프로세스에서는 파이프로 보낼게 없으므로, 부모 프로세서에서의 파이프 입구는 닫아둔다.
 		in = fd[0]; // 7. 파이프의 출구를 다시 in과 연결한다.
 	}
+	// reset_redirect()
 	pid = spawn_proc(in, 1, cmd + i);
 	return (pid);
 }
@@ -192,23 +209,20 @@ int		fork_pipes(int n, t_command *cmd)
 void	execute_job(t_job *job)
 {
 	pid_t	pid;
-	char	**tokens;
 	int		status;
 
 	while (job)
 	{
 		if ((job->str)[0] == '\0' || job->str == NULL)
 			exit(MALLOC_ERROR);
-		tokens = job->command->argv;
 		if (!check_builtins(job))
 			;
 		else
 		{
-			// check_redirect();
-			// set_redirect(job);
+			
 			pid = fork_pipes(job->command->idx, job->command);
 			waitpid(pid, &status, 0);
-			// reset_redirect(job);
+			
 		}
 		job = job->next;
 	}

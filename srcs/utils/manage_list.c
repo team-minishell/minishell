@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 21:19:37 by yochoi            #+#    #+#             */
-/*   Updated: 2020/07/25 22:53:56 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/10 21:43:20 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,8 @@ t_dict	*make_env_to_dict(char **envp)
 		t->key = ft_strdup(split[0]);
 		if (split[1] != NULL)
 			t->value = ft_strdup(split[1]);
-		else	// value가 비어있는 경우 추가
+		else
 			t->value = ft_strdup("");
-		/*if (!(t->next = (t_dict *)malloc(sizeof(t_dict))))
-			exit(MALLOC_ERROR);
-		t = t->next;*/
 		i++;
 		if (envp[i] != NULL)
 		{

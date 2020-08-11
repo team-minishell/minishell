@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 21:29:37 by hna               #+#    #+#             */
-/*   Updated: 2020/07/17 22:17:42 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/08/11 21:04:16 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ char	*env_to_str(char *line, char **converted_line, t_dict *envd)
 			*converted_line = convert_str(line, target, convert_dict->value);
 		else
 			*converted_line = convert_str(line, target, "");
+		free(target);
 		return (*converted_line);
 	}
 	return (0);

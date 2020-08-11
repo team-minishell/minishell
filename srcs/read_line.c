@@ -59,7 +59,7 @@ int		is_end_escape(char *line)
 int		read_line2(t_quote *q, int fd, char **origin, char **new_line)
 {
 	int		i;
-	char	*tmp;//new_line free 할때 사용하면 될듯
+	char	*tmp;
 	char	*line;
 	
 	line = *origin;
@@ -74,8 +74,12 @@ int		read_line2(t_quote *q, int fd, char **origin, char **new_line)
 			free(line);
 			return (1);
 		}
-		*new_line = ft_strjoin(*new_line, "\n");		//new_line free
-		*new_line = ft_strjoin(*new_line, line);		//new_line free
+		tmp = *new_line;
+		*new_line = ft_strjoin(*new_line, "\n");
+		free(tmp);
+		tmp = *new_line;
+		*new_line = ft_strjoin(*new_line, line);
+		free(tmp);
 		while (line[i])
 			check_quote(q, line, i++);
 		free(line);
@@ -86,8 +90,9 @@ int		read_line2(t_quote *q, int fd, char **origin, char **new_line)
 int		read_line(int fd, char **line)
 {
 	int		i;
-	t_quote	q;
+	char	*tmp;
 	char	*new_line;
+	t_quote	q;
 
 	i = 0;
 	if (get_next_line(fd, line) == 0)
@@ -98,7 +103,9 @@ int		read_line(int fd, char **line)
 	q.dq = -1;
 	q.sq = -1;
 	new_line = ft_strdup("");
-	new_line = ft_strjoin(new_line, *line); // ft_strjoin_free_s1();
+	tmp = new_line;
+	new_line = ft_strjoin(new_line, *line);
+	free(tmp);
 	while ((*line)[i])
 		check_quote(&q, *line, i++);
 	free(*line);

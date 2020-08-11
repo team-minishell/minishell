@@ -1,10 +1,5 @@
 #include "minishell.h"
 
-// 1. 세미콜론(진행중)
-// 2. 파이프
-// 3. 리디렉션 (다시)
-// 4. ctrl-d 누를 시 exit 출력하고 종료
-
 void	clear_screen(void)
 {
 	ft_printf ("\ec");
@@ -27,6 +22,32 @@ void	ft_perror(char *str)
 	write(2, "\n", 1);
 }
 
+void	free_job(t_job *job)
+{
+	int		i;
+	t_job	*tmp;
+	int		command_index;
+
+	i = 0;
+	command_index = job->command->idx;
+	while (job)
+	{
+		free(job->str);
+		while (i < command_index)
+		{
+			free(((job->command)+ i)->line);
+			free(((job->command)+ i)->cmd);
+			ft_split_del(((job->command)+ i)->argv);
+			// while (redirection free);
+			i++;
+		}
+		free(job->command);
+		tmp = job->next;
+		free(job);
+		job = tmp;
+	}
+}
+
 int		main(int argc, char **argv, char **envp)
 {
 	t_main	m;
@@ -47,10 +68,10 @@ int		main(int argc, char **argv, char **envp)
 			else
 			{
 				m.job = parse_line(m.line);
-				// line = parsing(line, env.envd);
 				if (m.job)
 					execute_job(m.job);
-				free(m.job);
+				//free_job(m.job);
+				free(m.line);
 			}
 		}
 	}
