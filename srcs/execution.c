@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 19:53:10 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/10 19:52:08 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/12 21:21:05 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,25 +70,21 @@ void	execute_with_envp(char **tokens, char **envp)
 ** 명령어를 실행함
 */
 
-int		check_builtins(t_job *job)
+int		check_builtins(t_command *command) 
 {
-	char *cmd;
-
-	cmd = job->command->cmd;
-	if (!ft_strcmp(cmd, "cd"))
-		execute_cd(job);
-	else if (!ft_strcmp(cmd, "echo"))
-		execute_echo(job);
-	else if (!ft_strcmp(cmd, "env"))
+	
+	if (!ft_strcmp(command->cmd, "cd"))
+		execute_cd(command);
+	else if (!ft_strcmp(command->cmd, "echo"))
+		execute_echo(command);
+	else if (!ft_strcmp(command->cmd, "env"))
 		execute_env();
-	else if (!ft_strcmp(cmd, "export"))
-		execute_export(job);
-	else if (!ft_strcmp(cmd, "pwd"))
-		execute_pwd(job);
-	else if (!ft_strcmp(cmd, "unset"))
-		execute_unset(job);
-	else if (!ft_strcmp(cmd, "exit"))
-		exit(0);
+	else if (!ft_strcmp(command->cmd, "export"))
+		execute_export(command);
+	else if (!ft_strcmp(command->cmd, "pwd"))
+		execute_pwd(command);
+	else if (!ft_strcmp(command->cmd, "unset"))
+		execute_unset(command);
 	else
 		return (1);
 	return (0);
@@ -98,7 +94,7 @@ int		check_builtins(t_job *job)
 ** fork_pipe.c
 */
 
-int		spawn_proc(int in, int out, t_command *cmd)
+int		spawn_proc(int in, int out, t_command *command, t_job *job)
 {
 	int		i;
 	char	**paths;
@@ -106,8 +102,53 @@ int		spawn_proc(int in, int out, t_command *cmd)
 	char	*full_path;
 	pid_t	pid;
 
+	t_redirect	*redi;
+
+	redi = command->redirect;
 	if ((pid = fork()) == 0)
 	{
+		while (redi)
+		{
+			int		fd;
+			if (redi->sign == RIGHT_ARROW)
+			{
+				redi->save_fd = dup(1);
+				fd = open(redi->filepath, O_CREAT | O_WRONLY, 0777);
+				if (fd < 0)
+				{
+					ft_printf("file open error\n");
+					exit(0);
+				}
+				dup2(fd, 1);
+				close(fd);
+			}
+			else if (redi->sign == LEFT_ARROW)
+			{
+				redi->save_fd = dup(0);
+				fd = open(redi->filepath, O_RDONLY);
+				if (fd < 0)
+				{
+					ft_printf("stdin : file open error\n");
+					ft_printf("filepath:%s$\n", redi->filepath);
+					exit(0);
+				}
+				dup2(fd, 0);
+				close(fd);
+			}
+			else if (redi->sign == DOUBLE_ARROW)
+			{
+				redi->save_fd = dup(1);
+				fd = open(redi->filepath, O_WRONLY | O_APPEND, 0777);
+				if (fd < 0)
+				{
+					ft_printf("file open error\n");
+					exit(0);
+				}
+				dup2(fd, 1);
+				close(fd);
+			}
+			redi = redi->next;
+		}
 		if (in != 0) // 3. in으로 설정한 값이 파이프 출구라면, 파이프 출구를 표준 입력으로 받는다.
 		{
 			dup2(in, 0);	// in = 파이프 출구 = 표준입력 // write(0, ...)
@@ -120,16 +161,21 @@ int		spawn_proc(int in, int out, t_command *cmd)
 		}
 		paths = get_paths_from_envp(g_env->envp);
 		i = 0;
-		while (paths[i])
+		if (!check_builtins(command))
+			;
+		else
 		{
-			temp_path = ft_strjoin(paths[i], "/");
-			full_path = ft_strjoin(temp_path, cmd->argv[0]);
-			free(temp_path);
-			execve(full_path, (char *const *)cmd->argv, g_env->envp); // 5. write(1, buffer, ...)방식의 출력 결과가, fd 1이 가리키는 곳으로 향한다. (파이프 입구 또는 표준 출력)
-			i++;
+			while (paths[i])
+			{
+				temp_path = ft_strjoin(paths[i], "/");
+				full_path = ft_strjoin(temp_path, command->argv[0]);
+				free(temp_path);
+				execve(full_path, (char *const *)command->argv, g_env->envp); // 5. write(1, buffer, ...)방식의 출력 결과가, fd 1이 가리키는 곳으로 향한다. (파이프 입구 또는 표준 출력)
+				i++;
+			}
+			if (errno)
+				ft_perror(command->argv[0]);
 		}
-		if (errno)
-			ft_perror(cmd->argv[0]);
 		exit(0);
 	}	// 	결과가 파이프의 입력으로 들어감.
 	return (pid);
@@ -185,7 +231,7 @@ int		reset_redirect(t_redirect *redirect)
 }
 */
 
-int		fork_pipes(int n, t_command *cmd)
+int		fork_pipes(int n, t_command *cmd, t_job *job)
 {
 	int		i;
 	pid_t	pid;
@@ -197,12 +243,12 @@ int		fork_pipes(int n, t_command *cmd)
 	while (++i < n - 1)
 	{
 		pipe(fd);
-		spawn_proc(in, fd[1], cmd + i); // 2. 표준 입력(0)과 파이프 입구가 각각 in, out이 된다.(out 되는 값이 다시 파이프 입구에 들어가야하기 때문에) // 6. 파이프의 출구(fd[0])로 실행결과가 넘어온다.
+		spawn_proc(in, fd[1], cmd + i, job); // 2. 표준 입력(0)과 파이프 입구가 각각 in, out이 된다.(out 되는 값이 다시 파이프 입구에 들어가야하기 때문에) // 6. 파이프의 출구(fd[0])로 실행결과가 넘어온다.
 		close(fd[1]); // 어차피 부모 프로세스에서는 파이프로 보낼게 없으므로, 부모 프로세서에서의 파이프 입구는 닫아둔다.
 		in = fd[0]; // 7. 파이프의 출구를 다시 in과 연결한다.
 	}
 	// reset_redirect()
-	pid = spawn_proc(in, 1, cmd + i);
+	pid = spawn_proc(in, 1, cmd + i, job);
 	return (pid);
 }
 
@@ -215,15 +261,10 @@ void	execute_job(t_job *job)
 	{
 		if ((job->str)[0] == '\0' || job->str == NULL)
 			exit(MALLOC_ERROR);
-		if (!check_builtins(job))
-			;
-		else
-		{
-			
-			pid = fork_pipes(job->command->idx, job->command);
-			waitpid(pid, &status, 0);
-			
-		}
+		if (!ft_strcmp(job->command->cmd, "exit"))
+			exit(0);
+		pid = fork_pipes(job->command->idx, job->command, job);
+		waitpid(pid, &status, 0);
 		job = job->next;
 	}
 }

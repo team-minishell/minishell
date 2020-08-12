@@ -14,8 +14,16 @@ void	clear_screen(void)
 void	ft_perror(char *str)
 {
 	char	*error_str;
+	char	**split;
 
 	error_str = strerror(errno);
+	split = ft_split(error_str, ' ');
+	if (!ft_strcmp(split[0], "exit"))
+	{
+		ft_split_del(split);
+		return ;
+	}
+	ft_split_del(split);
 	write(2, str, ft_strlen(str));
 	write(2, " : ", 3);
 	write(2, error_str, ft_strlen(error_str));
@@ -24,9 +32,10 @@ void	ft_perror(char *str)
 
 void	free_job(t_job *job)
 {
-	int		i;
-	t_job	*tmp;
-	int		command_index;
+	int			i;
+	t_job		*tmp_job;
+	t_redirect	*tmp_redirect;
+	int			command_index;
 
 	i = 0;
 	command_index = job->command->idx;
@@ -37,14 +46,20 @@ void	free_job(t_job *job)
 		{
 			free(((job->command)+ i)->line);
 			free(((job->command)+ i)->cmd);
-			ft_split_del(((job->command)+ i)->argv);
-			// while (redirection free);
+			//ft_split_del(((job->command)+ i)->argv);
+			while (job->command->redirect)
+			{
+				free(job->command->redirect->filepath);
+				tmp_redirect = job->command->redirect->next;
+				free(job->command->redirect);
+				job->command->redirect = tmp_redirect;
+			}
 			i++;
 		}
 		free(job->command);
-		tmp = job->next;
+		tmp_job = job->next;
 		free(job);
-		job = tmp;
+		job = tmp_job;
 	}
 }
 
@@ -70,7 +85,7 @@ int		main(int argc, char **argv, char **envp)
 				m.job = parse_line(m.line);
 				if (m.job)
 					execute_job(m.job);
-				//free_job(m.job);
+				free_job(m.job);
 				free(m.line);
 			}
 		}

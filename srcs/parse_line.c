@@ -198,11 +198,13 @@ char		*parse_path(char *str)
 		if ((str[i] == '>' || str[i] == '<') && is_quote_closed(&q))
 		{
 			ret = ft_strdup(str);
-			ft_strlcat(ret, str, i);
-			// ret = ft_strtrim_free_s1(ret, ">< ");
+			ret[i] = 0;
+			break;
 		}
 		i++;
 	}
+	if (ret)
+		ret = ft_strtrim(ret, " ");
 	return (ret);
 }
 
@@ -224,7 +226,7 @@ int			make_redirects(t_job *job)
 		i = 0;
 		command = (job->command) + n;
 		new = 1;
-		str = command->line;
+		str = ft_strdup(command->line);
 		init_quote(&q);
 		while (str[i])
 		{
@@ -234,6 +236,7 @@ int			make_redirects(t_job *job)
 				if (new)
 				{
 					command->redirect = malloc(sizeof(t_redirect));
+					(command->line)[i] = 0;
 					first = command->redirect;
 					new = 0;
 				}
@@ -252,6 +255,7 @@ int			make_redirects(t_job *job)
 				if (new)
 				{
 					command->redirect = malloc(sizeof(t_redirect));
+					(command->line)[i] = 0;
 					first = command->redirect;
 					new = 0;
 				}
@@ -269,6 +273,7 @@ int			make_redirects(t_job *job)
 				if (new)
 				{
 					command->redirect = malloc(sizeof(t_redirect));
+					(command->line)[i] = 0;
 					first = command->redirect;
 					new = 0;
 				}
@@ -283,6 +288,7 @@ int			make_redirects(t_job *job)
 			}
 			i++;
 		}
+		free(str);
 		command->redirect = first;
 		n++;
 	}
@@ -324,6 +330,7 @@ void		test_job(t_job *job)
 	int		i;
 	int		n;
 	char	**argv;
+	t_redirect	*redi;
 
 	ft_printf("========job struct test========\n");
 	while (job)
@@ -336,11 +343,12 @@ void		test_job(t_job *job)
 		while (i < job->command->idx)
 		{
 			ft_printf("\tcommand[%d]->line : %s$\n", i, ((job->command) + i)->line);
-			while (((job->command) + i)->redirect)
+			redi = ((job->command) + i)->redirect;
+			while (redi)
 			{
-				ft_printf("\tredirect sign: %d\n", ((job->command) + i)->redirect->sign);
-				ft_printf("\tredirect path: %s\n", ((job->command) + i)->redirect->filepath);
-				((job->command) + i)->redirect = ((job->command) + i)->redirect->next;
+				ft_printf("\tredirect sign: %d\n", redi->sign);
+				ft_printf("\tredirect path: %s\n", redi->filepath);
+				redi = redi->next;
 			}
 			n = 0;
 			argv = ((job->command) + i)->argv;

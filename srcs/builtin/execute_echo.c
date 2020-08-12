@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 20:35:08 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/06 23:38:34 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/12 21:13:18 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,27 +25,27 @@ void	print_string_without_doublequote(char *string)
 	}
 }
 
-int		execute_echo(t_job *job)
+int		execute_echo(t_command *command)
 {
 	int i;
 
-	if (!ft_strcmp("-n", job->command->argv[1]))
+	if (!ft_strcmp("-n", command->argv[1]))
 	{
 		i = 2;
-		while(job->command->argv[i])
+		while(command->argv[i])
 		{
-			print_string_without_doublequote(job->command->argv[i++]);
-			if (job->command->argv[i])
+			print_string_without_doublequote(command->argv[i++]);
+			if (command->argv[i])
 				ft_printf(" ");
 		}
 	}
 	else
 	{
 		i = 1;
-		while(job->command->argv[i])
+		while(command->argv[i])
 		{
-			print_string_without_doublequote(job->command->argv[i++]);
-			if (job->command->argv[i])
+			print_string_without_doublequote(command->argv[i++]);
+			if (command->argv[i])
 				ft_printf(" ");
 		}
 		ft_printf("\n");

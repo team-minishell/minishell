@@ -79,13 +79,13 @@ t_env				*g_env;
 ** builtin/execute_cd.c
 */
 
-int					execute_cd(t_job *job);
+int					execute_cd(t_command *command);
 
 /*
 ** builtin/execute_echo.c
 */
 
-int					execute_echo(t_job *job);
+int					execute_echo(t_command *command);
 
 /*
 ** builtin/execute_env.c
@@ -97,19 +97,19 @@ int					execute_env(void);
 ** builtin/execute_export.c
 */
 
-int					execute_export(t_job *job);
+int					execute_export(t_command *command);
 
 /*
 ** builtin/execute_pwd.c
 */
 
-int					execute_pwd(t_job *job);
+int					execute_pwd(t_command *command);
 
 /*
 ** builtin/execute_unset.c
 */
 
-int					execute_unset(t_job *job);
+int					execute_unset(t_command *command);
 
 /*
 ** utils/manage_list.c
@@ -137,7 +137,7 @@ char				*convert_str(char *base, char *target, char *convert);
 */
 
 void				execute_job(t_job *job);
-int					check_builtins(t_job *job);
+int					check_builtins(t_command *command);
 
 /*
 ** handle_signal.c

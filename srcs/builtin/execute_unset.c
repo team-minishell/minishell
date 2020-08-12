@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 21:26:06 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/10 21:45:02 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/12 21:11:56 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	execute_unset2(t_dict *tmp, t_dict *before)
 	free(point_to_free);
 }
 
-int		execute_unset(t_job *job)
+int		execute_unset(t_command *command)
 {
 	t_dict	*tmp;
 	t_dict	*point_to_free;
@@ -41,7 +41,7 @@ int		execute_unset(t_job *job)
 	before = NULL;
 	while (tmp)
 	{
-		if (ft_strcmp(tmp->key, job->command->argv[1]) == 0)
+		if (ft_strcmp(tmp->key, command->argv[1]) == 0)
 		{
 			execute_unset2(tmp, before);
 			break ;
