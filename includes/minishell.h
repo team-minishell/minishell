@@ -42,11 +42,6 @@ typedef struct		s_job
 	struct s_job	*next;			//다음 문자열
 }					t_job;
 
-typedef struct		s_quote
-{
-	int				sq;				//작은 따옴표
-	int				dq;				//큰 따옴표
-}					t_quote;
 
 typedef struct		s_dict
 {
@@ -68,6 +63,24 @@ typedef struct		s_main
 	t_job			*job;			//명령어(커맨드)를 세미콜론으로 구분해 저장할 구조체 변수
 	char			*line;			//명령어(커맨드)를 가리키는 포인터
 }					t_main;
+
+/*
+** struct for utils
+*/
+
+typedef struct		s_quote
+{
+	int				sq;				//작은 따옴표
+	int				dq;				//큰 따옴표
+}					t_quote;
+
+typedef struct		s_split
+{
+	int		i;
+	int		start;
+	int		len;
+	int		split_idx;
+}					t_split;
 
 /*
 ** global variable
@@ -151,9 +164,36 @@ int					handle_signal(void);
 
 void				ft_perror(char *str);
 
+/*
+** make_argv.c
+*/
+
+int					set_argv(t_job *job);
 
 /*
-** parser_line.c
+** make_commands.c
+*/
+
+char				*ft_strtrim_free_s1(char *s1, char *set);
+int					set_command_line(t_job *job, char **cmds);
+int					make_commands(t_job *job);
+
+/*
+** make_redirects.c
+*/
+
+char				*parse_path(char *str);
+int					make_redirects(t_job *job);
+
+/*
+** check_quote.c
+*/
+void				check_quote(t_quote *q, char *line, int i);
+void				init_quote(t_quote *q);
+int					is_quote_closed(t_quote *q);
+
+/*
+** parse_line.c
 */
 
 t_job				*parse_line(char *line);

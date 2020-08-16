@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+         #
+#    By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/28 06:15:21 by yochoi            #+#    #+#              #
-#    Updated: 2020/08/11 21:12:41 by nahangyeol       ###   ########.fr        #
+#    Updated: 2020/08/14 21:07:49 by yochoi           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,17 +67,19 @@ make_obj:
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_export.c		-o ./obj/execute_export.o		-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_pwd.c			-o ./obj/execute_pwd.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_unset.c		-o ./obj/execute_unset.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/executer/execution.c			-o ./obj/execution.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/parser/create_job.c			-o ./obj/create_job.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/parser/make_argv.c			-o ./obj/make_argv.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/parser/make_commands.c		-o ./obj/make_commands.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/parser/make_redirects.c		-o ./obj/make_redirects.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/parser/parse_line.c			-o ./obj/parse_line.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/reader/check_quote.c			-o ./obj/check_quote.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/reader/read_line.c			-o ./obj/read_line.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/utils/convert_str.c			-o ./obj/convert_str.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/utils/manage_list.c			-o ./obj/manage_list.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/utils/split_except_quote.c	-o ./obj/split_except_quote.o	-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/convert_str.c					-o ./obj/convert_str.o			-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/create_job.c					-o ./obj/create_job.o			-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/execution.c					-o ./obj/execution.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/handle_signal.c				-o ./obj/handle_signal.o		-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/main.c						-o ./obj/main.o					-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/parse_line.c					-o ./obj/parse_line.o			-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/parsing.c						-o ./obj/parsing.o				-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/pipe.c						-o ./obj/pipe.o					-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/read_line.c					-o ./obj/read_line.o			-I $(INC_DIR) -I $(LIBFT_INC)
 
 make_libft:
 	@make -C libft
