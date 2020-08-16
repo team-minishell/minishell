@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
+/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 21:25:36 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/12 21:12:44 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/14 21:07:37 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,32 @@
 int		execute_export(t_command *command)
 {
 	char	**splits;
-	t_dict	*envd;
+	char	**tmp;
+	t_dict	*already;
 	t_dict	*new;
 
-	envd = g_env->envd;
+	if (!command->argv[1])
+		return (0);
 	splits = ft_split(command->argv[1], '=');
-	if (!(new = malloc(sizeof(t_dict) * 1)))
-		exit(MALLOC_ERROR);
-	g_env->envd = new;
-	new->next = envd;
-	new->key = splits[0];
-	new->value = splits[1];
-	ft_split_del(splits);
+	if ((already = find_env(g_env->envd, splits[0])))
+	{
+		ft_strdel(&already->key);
+		ft_strdel(&already->value);
+		already->key = splits[0];
+		already->value = splits[1];
+	}
+	else
+	{
+		if (!(new = malloc(sizeof(t_dict) * 1)))
+			exit(MALLOC_ERROR);
+		g_env->envd = new;
+		new->next = g_env->envd;
+		new->key = splits[0];
+		new->value = splits[1];
+		free(splits);
+	}
+	tmp = g_env->envp;
+	g_env->envp = make_dict_to_envp(g_env->envd);
+	ft_split_del(tmp);
 	return (0);
 }

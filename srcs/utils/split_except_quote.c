@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   split_except_quote.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/14 19:30:37 by yochoi            #+#    #+#             */
+/*   Updated: 2020/08/14 20:27:15 by hna              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 /*
@@ -5,19 +17,7 @@
 ** 기존 ft_split과 같은데, 따옴표 안에 있는 문자는 무시한다.
 */
 
-typedef struct	s_split
-{
-	int		i;
-	int		start;
-	int		len;
-	int		split_idx;
-}				t_split;
-
-/*
-** split 구조체 초기화
-*/
-
-void		init_split(t_split *spt)
+void			init_split(t_split *spt)
 {
 	spt->i = 0;
 	spt->len = 0;
@@ -25,7 +25,7 @@ void		init_split(t_split *spt)
 	spt->split_idx = 0;
 }
 
-int			get_split_len(char *str, char c)
+int				get_split_len(char *str, char c)
 {
 	int		i;
 	int		ret;
@@ -45,7 +45,7 @@ int			get_split_len(char *str, char c)
 	return (ret);
 }
 
-char		**malloc_splits(char *str, char c)
+char			**malloc_splits(char *str, char c)
 {
 	char	**splits;
 	int		split_len;
@@ -57,7 +57,7 @@ char		**malloc_splits(char *str, char c)
 	return (splits);
 }
 
-char		**split_except_quote(char *str, char c)
+char			**split_except_quote(char *str, char c)
 {
 	char	**splits;
 	t_quote	q;

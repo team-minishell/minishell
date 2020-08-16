@@ -1,42 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   read_line.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/14 20:24:13 by yochoi            #+#    #+#             */
+/*   Updated: 2020/08/14 21:05:46 by yochoi           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-
-/*
-** single quote(')와 double quote(")를 조건에 따라 열고 닫는다.
-** 닫혀있음 : -1("hello world")
-** 열려있음 : 1 ("hello world)
-*/
-
-void	check_quote(t_quote *q, char *line, int i)
-{
-	if (i == 0 && line[i] == '\"')
-	{
-		if (q->sq == -1)
-		{
-			q->dq *= -1;
-		}
-	}
-	else if (i == 0 && line[i] == '\'')
-	{
-		if (q->dq == -1)
-		{
-			q->sq *= -1;
-		}
-	}
-	else if (i != 0 && line[i] == '\"' && line[i - 1] != '\\')
-	{
-		if (q->sq == -1)
-		{
-			q->dq *= -1;
-		}
-	}
-	else if (i != 0 && line[i] == '\'' && line[i - 1] != '\\')
-	{
-		if (q->dq == -1)
-		{
-			q->sq *= -1;
-		}
-	}
-}
 
 int		is_end_escape(char *line)
 {

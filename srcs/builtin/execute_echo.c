@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
+/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 20:35:08 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/12 21:13:18 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/14 19:30:01 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int		execute_echo(t_command *command)
 	if (!ft_strcmp("-n", command->argv[1]))
 	{
 		i = 2;
-		while(command->argv[i])
+		while (command->argv[i])
 		{
 			print_string_without_doublequote(command->argv[i++]);
 			if (command->argv[i])
@@ -42,7 +42,7 @@ int		execute_echo(t_command *command)
 	else
 	{
 		i = 1;
-		while(command->argv[i])
+		while (command->argv[i])
 		{
 			print_string_without_doublequote(command->argv[i++]);
 			if (command->argv[i])
@@ -50,5 +50,5 @@ int		execute_echo(t_command *command)
 		}
 		ft_printf("\n");
 	}
-	return 0;
+	return (0);
 }

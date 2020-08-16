@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/14 20:23:53 by yochoi            #+#    #+#             */
+/*   Updated: 2020/08/14 20:23:56 by hna              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	clear_screen(void)
@@ -45,8 +57,7 @@ void	free_job(t_job *job)
 		while (i < command_index)
 		{
 			free(((job->command)+ i)->line);
-			free(((job->command)+ i)->cmd);
-			//ft_split_del(((job->command)+ i)->argv);
+			ft_split_del(((job->command)+ i)->argv);
 			while (job->command->redirect)
 			{
 				free(job->command->redirect->filepath);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   manage_list.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
+/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/07/16 21:19:37 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/10 21:43:20 by nahangyeol       ###   ########.fr       */
+/*   Created: 2020/08/14 20:23:34 by yochoi            #+#    #+#             */
+/*   Updated: 2020/08/14 20:31:46 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@ t_dict	*make_env_to_dict(char **envp)
 	t_dict	*start;
 
 	i = 0;
-	if (!(start = (t_dict *)malloc(sizeof(t_dict))))
-		exit(MALLOC_ERROR);
+	start = (t_dict *)malloc(sizeof(t_dict));
 	t = start;
 	while (envp[i] != NULL)
 	{
@@ -35,8 +34,7 @@ t_dict	*make_env_to_dict(char **envp)
 		i++;
 		if (envp[i] != NULL)
 		{
-			if (!(t->next = (t_dict *)malloc(sizeof(t_dict))))
-				exit(MALLOC_ERROR);
+			t->next = (t_dict *)malloc(sizeof(t_dict));
 			t = t->next;
 		}
 		ft_split_del(split);
