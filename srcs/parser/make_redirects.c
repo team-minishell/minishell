@@ -6,11 +6,16 @@
 /*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:36:18 by hna               #+#    #+#             */
-/*   Updated: 2020/08/14 21:16:32 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/18 12:16:53 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** 현재 문자열부터 < 또는 > 기호가 나올때 까지의 문자열을 복제하고
+** 공백문자를 제거한 문자를 리턴한다.
+*/
 
 char		*parse_path(char *str)
 {
@@ -37,14 +42,19 @@ char		*parse_path(char *str)
 	return (ret);
 }
 
-int			malloc_redirect(t_command *command, t_redirect **f, int i, int *new)
+/*
+** 첫 리다이렉션이라면 새로 할당해준다.
+** 아니라면 기존 리디렉션의 next에 할당한다.
+*/
+
+int			malloc_redirect(t_command *command, t_redi *redis)
 {
-	if (*new)
+	if (redis->new)
 	{
 		command->redirect = malloc(sizeof(t_redirect));
-		(command->line)[i] = 0;
-		*f = command->redirect;
-		*new = 0;
+		(command->line)[redis->i] = 0;
+		redis->first = command->redirect;
+		redis->new = 0;
 	}
 	else
 	{
@@ -54,48 +64,67 @@ int			malloc_redirect(t_command *command, t_redirect **f, int i, int *new)
 	return (0);
 }
 
+/*
+** redirect 기호를 확인하고 알맞은 값을 구조체에 넣어준다.
+*/
+
+int			make_redirect(t_command *cmd, t_redi *redis, char *str, t_quote *q)
+{
+	int		i;
+
+	i = redis->i;
+	if (str[i] == '>' && str[i + 1] == '>' && is_quote_closed(q))
+	{
+		malloc_redirect(cmd, redis);
+		cmd->redirect->filepath = parse_path(&str[i + 2]);
+		cmd->redirect->sign = DOUBLE_ARROW;
+		cmd->redirect->next = 0;
+		redis->i++;
+	}
+	else if ((str[i] == '>' || str[i] == '<') && is_quote_closed(q))
+	{
+		malloc_redirect(cmd, redis);
+		cmd->redirect->filepath = parse_path(&str[i + 1]);
+		cmd->redirect->sign = (str[i] == '>') ? RIGHT_ARROW : LEFT_ARROW;
+		cmd->redirect->next = 0;
+	}
+	return (0);
+}
+
+/*
+** jobs를 순회하면서 redirect 구조체를 할당하고 값을 넣어준다.
+*/
+
+void		init_redis(t_redi *redis)
+{
+	redis->i = 0;
+	redis->first = 0;
+	redis->new = 1;
+}
+
 int			make_redirects(t_job *job)
 {
-	int			i;
+	t_redi		redis;
 	int			n;
 	t_quote		q;
 	t_command	*command;
-	t_redirect	*redirect;
-	t_redirect	*first;
 	char		*str;
-	int			new;
 
 	n = 0;
 	while (n < job->command->idx)
 	{
-		first = 0;
-		i = 0;
 		command = (job->command) + n;
-		new = 1;
-		str = ft_strdup(command->line);
+		init_redis(&redis);
 		init_quote(&q);
-		while (str[i])
+		str = ft_strdup(command->line);
+		while (str[redis.i])
 		{
-			check_quote(&q, str, i);
-			if (str[i] == '>' && str[i + 1] == '>' && is_quote_closed(&q))
-			{
-				malloc_redirect(command, &first, i, &new);
-				command->redirect->filepath = parse_path(&str[i + 2]);
-				command->redirect->sign = DOUBLE_ARROW;
-				command->redirect->next = 0;
-				i++;
-			}
-			else if ((str[i] == '>' || str[i] == '<') && is_quote_closed(&q))
-			{
-				malloc_redirect(command, &first, i, &new);
-				command->redirect->filepath = parse_path(&str[i + 1]);
-				command->redirect->sign = (str[i] == '>') ? RIGHT_ARROW : LEFT_ARROW;
-				command->redirect->next = 0;
-			}
-			i++;
+			check_quote(&q, str, redis.i);
+			make_redirect(command, &redis, str, &q);
+			redis.i++;
 		}
 		free(str);
-		command->redirect = first;
+		command->redirect = (redis.first);
 		n++;
 	}
 	return (0);

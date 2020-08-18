@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+         #
+#    By: hna <hna@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/28 06:15:21 by yochoi            #+#    #+#              #
-#    Updated: 2020/08/14 21:07:49 by yochoi           ###   ########.fr        #
+#    Updated: 2020/08/18 15:21:43 by hna              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,9 @@ make_obj:
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_export.c		-o ./obj/execute_export.o		-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_pwd.c			-o ./obj/execute_pwd.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_unset.c		-o ./obj/execute_unset.o		-I $(INC_DIR) -I $(LIBFT_INC)
-	@$(CC) $(CFLAG) -c ./srcs/executer/execution.c			-o ./obj/execution.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/executer/execute_job.c		-o ./obj/execute_job.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/executer/set_redirect.c		-o ./obj/set_redirect.o			-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/executer/spawn_process.c		-o ./obj/spawn_process.o		-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/parser/create_job.c			-o ./obj/create_job.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/parser/make_argv.c			-o ./obj/make_argv.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/parser/make_commands.c		-o ./obj/make_commands.o		-I $(INC_DIR) -I $(LIBFT_INC)

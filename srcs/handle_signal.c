@@ -6,22 +6,22 @@
 /*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:21:56 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/14 20:21:58 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/17 19:57:13 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	manage_ctrl_back_slash(int _)
+void	manage_ctrl_back_slash(int dump)
 {
-	(void)_;
+	(void)dump;
 	ft_printf("\b \b");
 	ft_printf("\b \b");
 }
 
-void	manage_ctrl_c(int _)
+void	manage_ctrl_c(int dump)
 {
-	(void)_;
+	(void)dump;
 	ft_printf("\b \b");
 	ft_printf("\b \b");
 	ft_printf("\n");

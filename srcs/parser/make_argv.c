@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_argv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:45:43 by hna               #+#    #+#             */
-/*   Updated: 2020/08/14 20:47:47 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/08/18 15:10:50 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ char		*convert_env(char *str)
 		if (str[i] == '$' && str[i + 1] != '(')
 		{
 			value = find_value_in_dict(g_env->envd, &str[i + 1]);
-			ft_printf("value:%s\n", value);
 			target = ft_strdup(&str[i]);
 			ret = convert_str(str, target, value);
 			free(value);

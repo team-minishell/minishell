@@ -82,6 +82,14 @@ typedef struct		s_split
 	int		split_idx;
 }					t_split;
 
+typedef	struct		s_redi
+{
+	int			i;
+	int			new;
+	t_redirect	*first;
+	char		*str;
+}					t_redi;
+
 /*
 ** global variable
 */
@@ -145,6 +153,21 @@ char				**split_except_quote(char *str, char c);
 */
 
 char				*convert_str(char *base, char *target, char *convert);
+
+/*
+** set_redirect.c
+*/
+
+int					set_in_and_out(int in, int out);
+int					set_dup(t_redirect *redirect, int fd1, int fd2);
+int					set_redirect(t_redirect *redirect);
+
+/*
+** spawn_process.c
+*/
+
+int					spawn_proc(int i, int o, t_command *command, t_job *job);
+
 /*
 ** execution.c
 */
@@ -162,7 +185,7 @@ int					handle_signal(void);
 ** main.c
 */
 
-void				ft_perror(char *str);
+int					ft_perror(char *str, int err_num);
 
 /*
 ** make_argv.c

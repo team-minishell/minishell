@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:24:13 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/14 21:05:46 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/08/17 19:57:13 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,24 +30,28 @@ int		is_end_escape(char *line)
 ** line을 읽어오는데 ' 나 "가 있는 경우, 줄 바꿈 문자까지 읽어온다.
 */
 
+int		multiline_eof_exception(char *line)
+{
+	ft_printf("minishell: unexpected EOF while looking for matching `\'\"\n");
+	ft_printf("minishell: syntax error: unexpected end of file\n");
+	free(line);
+	return (1);
+}
+
 int		read_line2(t_quote *q, int fd, char **origin, char **new_line)
 {
 	int		i;
 	char	*tmp;
 	char	*line;
-	
+
 	line = *origin;
 	while (!(q->sq == -1 && q->dq == -1) || is_end_escape(line))
 	{
 		i = 0;
 		ft_printf("> ");
 		if (get_next_line(fd, &line) == 0)
-		{
-			ft_printf("minishell: unexpected EOF while looking for matching `\'\"\n");
-			ft_printf("minishell: syntax error: unexpected end of file\n");
-			free(line);
-			return (1);
-		}
+			if (multiline_eof_exception(line))
+				return (1);
 		tmp = *new_line;
 		*new_line = ft_strjoin(*new_line, "\n");
 		free(tmp);

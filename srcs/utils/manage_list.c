@@ -6,7 +6,7 @@
 /*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:23:34 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/14 20:31:46 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/17 19:57:13 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,13 @@ t_dict	*make_env_to_dict(char **envp)
 	t = start;
 	while (envp[i] != NULL)
 	{
-		ft_printf("envp[%d]:%s\n", i, envp[i]);
 		split = ft_split(envp[i], '=');
 		t->key = ft_strdup(split[0]);
 		if (split[1] != NULL)
 			t->value = ft_strdup(split[1]);
 		else
 			t->value = ft_strdup("");
-		i++;
-		if (envp[i] != NULL)
+		if (envp[++i] != NULL)
 		{
 			t->next = (t_dict *)malloc(sizeof(t_dict));
 			t = t->next;
