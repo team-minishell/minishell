@@ -6,7 +6,7 @@
 /*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 15:11:02 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/18 15:20:44 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/18 19:29:41 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ int		execve_with_envp(char *cmd, char **argv, char **envp)
 	ft_split_del(paths);
 	if (errno)
 	{
-		ft_perror(cmd, errno);
+		write(2, cmd, ft_strlen(cmd));
+		write(2, ": command not found\n", 20);
 		return (-1);
 	}
 	return (0);

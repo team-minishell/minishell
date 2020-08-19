@@ -1,5 +1,17 @@
-#ifndef MINI_SHELL
-# define MINI_SHELL
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/08/18 19:19:53 by nahangyeol        #+#    #+#             */
+/*   Updated: 2020/08/19 23:07:04 by nahangyeol       ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef MINISHELL_H
+# define MINISHELL_H
 
 # include "libft.h"
 # include <unistd.h>
@@ -20,58 +32,84 @@
 
 typedef struct		s_redirect
 {
-	int					sign;		// (1. >) (2. <) (3. >>)
-	int					save_fd;	// fd 원상복구를 위한 저장본
-	char				*filepath;	// 목표지점
-	struct s_redirect	*next;		// 다음 리디렉션
+	int					sign;
+	int					save_fd;
+	char				*filepath;
+	struct s_redirect	*next;
 }					t_redirect;
+
+/*
+** cmd: 명령
+** line: redirection 분리 전 원본 문자열
+** idx: 파이프로 이어진 커맨드의 갯수
+*/
 
 typedef struct		s_command
 {
-	char			*cmd;			//명령어
+	char			*cmd;
 	char			*line;
-	char			**argv;			//인자
+	char			**argv;
 	t_redirect		*redirect;
-	int				idx;			//커맨드 갯수
+	int				idx;
 }					t_command;
+
+/*
+** str: 세미콜론으로 구분된 명령 단위
+*/
 
 typedef struct		s_job
 {
-	char			*str;			//세미콜론으로 구분된 하나의 문자열
-	t_command		*command;		//pipe처리시 command는 배열로 올 수 있음.
-	struct s_job	*next;			//다음 문자열
+	char			*str;
+	t_command		*command;
+	struct s_job	*next;
 }					t_job;
-
 
 typedef struct		s_dict
 {
-	char			*key;			//환경변수의 키 (e.g SHELL)
-	char			*value;			//환경변수의 값 (e.g /bin/zsh)
-	struct s_dict	*next;			//다음 환경변수
+	char			*key;
+	char			*value;
+	struct s_dict	*next;
 }					t_dict;
+
+/*
+** envp: main함수에서 받은 환경변수로, 2차원 배열임
+** envd: envp를 딕셔너리 연결리스트로 바꾼 구조체 포인터
+*/
 
 typedef struct		s_env
 {
-	char			**envp;			//main함수에서 받은 환경변수로, 2차원 배열임
-	t_dict			*envd;			//main함수에서 받은 2차원 배열 환경변수를 연결리스트로 바꾼 구조체 포인터
+	char			**envp;
+	t_dict			*envd;
 }					t_env;
+
+/*
+** pid: minishell의 프로세스
+** env: 환경변수에 대한 정보를 담는 구조체 변수
+** job: 명령들을 저장하기 위한 구조체 변수
+** line: 명령어를 담는 포인터
+*/
 
 typedef struct		s_main
 {
-	pid_t			pid;			//minishell의 프로세스 ID
-	t_env			env;			//envp와 envd를 넣어둘 구조체 변수
-	t_job			*job;			//명령어(커맨드)를 세미콜론으로 구분해 저장할 구조체 변수
-	char			*line;			//명령어(커맨드)를 가리키는 포인터
+	pid_t			pid;
+	t_env			env;
+	t_job			*job;
+	char			*line;
 }					t_main;
 
 /*
 ** struct for utils
 */
 
+/*
+** sq: 작은 따옴표
+** dq: 큰 따옴표
+*/
+
 typedef struct		s_quote
 {
-	int				sq;				//작은 따옴표
-	int				dq;				//큰 따옴표
+	int				sq;
+	int				dq;
 }					t_quote;
 
 typedef struct		s_split
@@ -133,6 +171,80 @@ int					execute_pwd(t_command *command);
 int					execute_unset(t_command *command);
 
 /*
+** executer/execute_job.c
+*/
+
+void				execute_job(t_job *job);
+int					check_builtins(t_command *command);
+
+/*
+** executer/set_redirect.c
+*/
+
+int					set_in_and_out(int in, int out);
+int					set_dup(t_redirect *redirect, int fd1, int fd2);
+int					set_redirect(t_redirect *redirect);
+
+/*
+** executer/spawn_process.c
+*/
+
+int					spawn_proc(int i, int o, t_command *command, t_job *job);
+
+/*
+** parser/create_job.c
+*/
+
+t_job				*create_job(char *line);
+
+/*
+** parser/make_argv.c
+*/
+
+int					set_argv(t_job *job);
+
+/*
+** parser/make_commands.c
+*/
+
+char				*ft_strtrim_free_s1(char *s1, char *set);
+int					set_command_line(t_job *job, char **cmds);
+int					make_commands(t_job *job);
+
+/*
+** parser/make_redirects.c
+*/
+
+char				*parse_path(char *str);
+int					make_redirects(t_job *job);
+
+/*
+** parser/parse_line.c
+*/
+
+t_job				*parse_line(char *line);
+
+/*
+** reader/check_quote.c
+*/
+
+void				init_quote(t_quote *q);
+int					is_quote_closed(t_quote *q);
+void				check_quote(t_quote *q, char *line, int i);
+
+/*
+** reader/read_line.c
+*/
+
+int					read_line(int fd, char **line);
+
+/*
+** utils/convert_str.c
+*/
+
+char				*convert_str(char *base, char *target, char *convert);
+
+/*
 ** utils/manage_list.c
 */
 
@@ -149,31 +261,16 @@ char				*find_value_in_dict(t_dict *envd, char *key);
 char				**split_except_quote(char *str, char c);
 
 /*
-** convert_str.c
+** check_syntax.c
 */
 
-char				*convert_str(char *base, char *target, char *convert);
+int					check_syntax(char *str);
 
 /*
-** set_redirect.c
+** free.c
 */
 
-int					set_in_and_out(int in, int out);
-int					set_dup(t_redirect *redirect, int fd1, int fd2);
-int					set_redirect(t_redirect *redirect);
-
-/*
-** spawn_process.c
-*/
-
-int					spawn_proc(int i, int o, t_command *command, t_job *job);
-
-/*
-** execution.c
-*/
-
-void				execute_job(t_job *job);
-int					check_builtins(t_command *command);
+void				free_job(t_job *job);
 
 /*
 ** handle_signal.c
@@ -187,68 +284,4 @@ int					handle_signal(void);
 
 int					ft_perror(char *str, int err_num);
 
-/*
-** make_argv.c
-*/
-
-int					set_argv(t_job *job);
-
-/*
-** make_commands.c
-*/
-
-char				*ft_strtrim_free_s1(char *s1, char *set);
-int					set_command_line(t_job *job, char **cmds);
-int					make_commands(t_job *job);
-
-/*
-** make_redirects.c
-*/
-
-char				*parse_path(char *str);
-int					make_redirects(t_job *job);
-
-/*
-** check_quote.c
-*/
-void				check_quote(t_quote *q, char *line, int i);
-void				init_quote(t_quote *q);
-int					is_quote_closed(t_quote *q);
-
-/*
-** parse_line.c
-*/
-
-t_job				*parse_line(char *line);
-
-/*
-** create_job.c
-*/
-
-t_job				*create_job(char *line);
-
-/*
-** parsing.c
-*/
-
-char				*parsing(char *line, t_dict *envl);
-
-/*
-** pipe.c
-*/
-
-/*
-** read_line.c
-*/
-
-int					read_line(int fd, char **line);
-void				init_quote(t_quote *q);
-int					is_quote_closed(t_quote *q);
-void				check_quote(t_quote *q, char *line, int i);
-
-/*
-** redirect.c
-*/
-
-int					check_redirect(t_job *job);
 #endif

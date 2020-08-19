@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_commands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yochoi <yochoi@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:30:17 by hna               #+#    #+#             */
-/*   Updated: 2020/08/14 20:35:15 by yochoi           ###   ########.fr       */
+/*   Updated: 2020/08/18 20:42:03 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ int			make_commands(t_job *job)
 	while (cmds[n])
 	{
 		cmds[n] = ft_strtrim_free_s1(cmds[n], " |");
-		n++;
+		if (cmds[n])
+			n++;
 	}
 	job->command = malloc(sizeof(t_command) * n);
 	job->command->idx = n;

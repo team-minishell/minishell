@@ -6,7 +6,7 @@
 /*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:24:00 by hna               #+#    #+#             */
-/*   Updated: 2020/08/18 12:16:57 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/18 20:25:40 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_job		*parse_line(char *original_line)
 	first_job = job;
 	while (job)
 	{
-		if ((job->str)[0] == '\0')
+		if (job->str[0] == '\0')
 		{
 			job = job->next;
 			continue;

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hna <hna@student.42.fr>                    +#+  +:+       +#+         #
+#    By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/28 06:15:21 by yochoi            #+#    #+#              #
-#    Updated: 2020/08/18 15:21:43 by hna              ###   ########.fr        #
+#    Updated: 2020/08/19 23:06:09 by nahangyeol       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,6 +80,8 @@ make_obj:
 	@$(CC) $(CFLAG) -c ./srcs/utils/convert_str.c			-o ./obj/convert_str.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/utils/manage_list.c			-o ./obj/manage_list.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/utils/split_except_quote.c	-o ./obj/split_except_quote.o	-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/free.c						-o ./obj/free.o					-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/check_syntax.c				-o ./obj/check_syntax.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/handle_signal.c				-o ./obj/handle_signal.o		-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/main.c						-o ./obj/main.o					-I $(INC_DIR) -I $(LIBFT_INC)
 

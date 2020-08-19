@@ -6,11 +6,19 @@
 /*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 21:25:36 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/14 21:07:37 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/18 19:18:00 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	if_already_exist(t_dict *already, char **splits)
+{
+	ft_strdel(&already->key);
+	ft_strdel(&already->value);
+	already->key = splits[0];
+	already->value = splits[1];
+}
 
 int		execute_export(t_command *command)
 {
@@ -23,12 +31,7 @@ int		execute_export(t_command *command)
 		return (0);
 	splits = ft_split(command->argv[1], '=');
 	if ((already = find_env(g_env->envd, splits[0])))
-	{
-		ft_strdel(&already->key);
-		ft_strdel(&already->value);
-		already->key = splits[0];
-		already->value = splits[1];
-	}
+		if_already_exist(already, splits);
 	else
 	{
 		if (!(new = malloc(sizeof(t_dict) * 1)))
