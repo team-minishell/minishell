@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_job.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 19:53:10 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/18 15:20:49 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/18 16:04:30 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,13 @@ void	execute_job(t_job *job)
 			exit(MALLOC_ERROR);
 		if (!ft_strcmp(job->command->cmd, "exit"))
 			exit(0);
-		pid = fork_pipes(job->command->idx, job->command, job);
-		waitpid(pid, &status, 0);
+		if (!ft_strcmp(job->command->cmd, "cd"))
+			execute_cd(job->command);
+		else
+		{
+			pid = fork_pipes(job->command->idx, job->command, job);
+			waitpid(pid, &status, 0);
+		}
 		job = job->next;
 	}
 }

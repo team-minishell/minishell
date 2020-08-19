@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   set_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 15:18:23 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/18 15:20:48 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/18 15:57:55 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,23 +50,19 @@ int		set_redirect(t_redirect *redirect)
 
 	while (redirect)
 	{
-		if (redirect->sign == RIGHT_ARROW || redirect->sign == DOUBLE_ARROW)
-		{
-			if (redirect->sign == RIGHT_ARROW)
-				fd = open(redirect->filepath, O_CREAT | O_WRONLY, 0777);
-			else
-				fd = open(redirect->filepath, O_WRONLY | O_APPEND, 0777);
-			if (errno && ft_perror("", errno))
-				continue ;
-			set_dup(redirect, fd, 1);
-		}
+		if (redirect->sign == RIGHT_ARROW)
+			fd = open(redirect->filepath, O_CREAT | O_RDWR, 0777);
+		else if (redirect->sign == DOUBLE_ARROW)
+			fd = open(redirect->filepath, O_CREAT | O_APPEND | O_RDWR, 0777);
 		else if (redirect->sign == LEFT_ARROW)
-		{
 			fd = open(redirect->filepath, O_RDONLY);
-			if (errno && ft_perror("", errno))
-				continue ;
+		if (fd < 0)
+			ft_perror(redirect->filepath, errno);
+		if (redirect->sign == LEFT_ARROW)
 			set_dup(redirect, fd, 0);
-		}
+		else if (redirect->sign == DOUBLE_ARROW ||\
+				redirect->sign == RIGHT_ARROW)
+			set_dup(redirect, fd, 1);
 		redirect = redirect->next;
 	}
 	return (0);
