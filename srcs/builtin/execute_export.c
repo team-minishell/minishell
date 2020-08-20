@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 21:25:36 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/18 19:18:00 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/20 21:26:52 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int		execute_export(t_command *command)
 	char	**tmp;
 	t_dict	*already;
 	t_dict	*new;
+	t_dict	*dict_tmp;
 
 	if (!command->argv[1])
 		return (0);
@@ -36,8 +37,9 @@ int		execute_export(t_command *command)
 	{
 		if (!(new = malloc(sizeof(t_dict) * 1)))
 			exit(MALLOC_ERROR);
+		dict_tmp = g_env->envd;
 		g_env->envd = new;
-		new->next = g_env->envd;
+		new->next = dict_tmp;
 		new->key = splits[0];
 		new->value = splits[1];
 		free(splits);
@@ -45,5 +47,6 @@ int		execute_export(t_command *command)
 	tmp = g_env->envp;
 	g_env->envp = make_dict_to_envp(g_env->envd);
 	ft_split_del(tmp);
+	g_status = 0;
 	return (0);
 }

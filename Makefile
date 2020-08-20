@@ -6,7 +6,7 @@
 #    By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/03/28 06:15:21 by yochoi            #+#    #+#              #
-#    Updated: 2020/08/19 23:06:09 by nahangyeol       ###   ########.fr        #
+#    Updated: 2020/08/20 20:04:55 by nahangyeol       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -65,6 +65,7 @@ make_obj:
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_echo.c		-o ./obj/execute_echo.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_env.c			-o ./obj/execute_env.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_export.c		-o ./obj/execute_export.o		-I $(INC_DIR) -I $(LIBFT_INC)
+	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_exit.c		-o ./obj/execute_exit.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_pwd.c			-o ./obj/execute_pwd.o			-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/builtin/execute_unset.c		-o ./obj/execute_unset.o		-I $(INC_DIR) -I $(LIBFT_INC)
 	@$(CC) $(CFLAG) -c ./srcs/executer/execute_job.c		-o ./obj/execute_job.o			-I $(INC_DIR) -I $(LIBFT_INC)

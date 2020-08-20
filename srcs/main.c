@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:23:53 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/18 21:01:25 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/20 20:23:45 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ int		main(int argc, char **argv, char **envp)
 	t_main	m;
 
 	m.pid = 1;
+	m.read_ret = 0;
 	set_envs(&m, envp);
 	clear_screen();
 	handle_signal();
@@ -66,8 +67,9 @@ int		main(int argc, char **argv, char **envp)
 	{
 		if (m.pid > 0)
 		{
-			ft_printf("\033[0;32mminishell> \033[0;0m");
-			if (read_line(0, &m.line) != 1)
+			if (m.read_ret != 1)
+				ft_printf("\033[0;32mminishell> \033[0;0m");
+			if ((m.read_ret = read_line(0, &m.line, m.read_ret)) != 1)
 			{
 				if (!check_syntax(m.line))
 				{

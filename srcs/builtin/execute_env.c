@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_env.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 22:42:34 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/14 19:29:06 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/20 19:13:43 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@ int		execute_env(void)
 		ft_printf("%s=%s\n", tmp->key, tmp->value);
 		tmp = tmp->next;
 	}
+	g_status = 0;
 	return (0);
 }

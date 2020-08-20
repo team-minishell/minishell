@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 19:19:53 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/20 17:43:43 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/20 20:23:59 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct		s_main
 	t_env			env;
 	t_job			*job;
 	char			*line;
+	int				read_ret;
 }					t_main;
 
 /*
@@ -134,6 +135,7 @@ typedef	struct		s_redi
 
 t_env				*g_env;
 int					g_status;
+int					g_escape;
 
 /*
 ** builtin/execute_cd.c
@@ -170,6 +172,12 @@ int					execute_pwd(t_command *command);
 */
 
 int					execute_unset(t_command *command);
+
+/*
+** builtin/execute_exit.c
+*/
+
+void				execute_exit(t_command *command);
 
 /*
 ** executer/execute_job.c
@@ -237,7 +245,7 @@ void				check_quote(t_quote *q, char *line, int i);
 ** reader/read_line.c
 */
 
-int					read_line(int fd, char **line);
+int					read_line(int fd, char **line, int read_ret);
 
 /*
 ** utils/convert_str.c

@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 21:26:06 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/12 21:11:56 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/20 21:32:14 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,7 @@ int		execute_unset(t_command *command)
 		before = tmp;
 		tmp = tmp->next;
 	}
+	g_env->envp = make_dict_to_envp(g_env->envd);
+	g_status = 0;
 	return (0);
 }

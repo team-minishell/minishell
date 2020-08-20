@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 15:11:02 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/20 17:46:14 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/20 21:41:14 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,22 +56,28 @@ int		execve_with_envp(char *cmd, char **argv, char **envp)
 
 	i = 0;
 	paths = get_paths_from_envp(envp);
-	execve(cmd, argv, envp);
-	while (paths[i])
+	if (paths == 0)
+		execve(cmd, argv, envp);
+	else
 	{
-		temp_path = ft_strjoin(paths[i], "/");
-		full_path = ft_strjoin(temp_path, cmd);
-		free(temp_path);
-		execve(full_path, argv, envp);
-		i++;
+		execve(cmd, argv, envp);
+		while (paths[i])
+		{
+			temp_path = ft_strjoin(paths[i], "/");
+			full_path = ft_strjoin(temp_path, cmd);
+			free(temp_path);
+			execve(full_path, argv, envp);
+			i++;
+		}
 	}
-	ft_split_del(paths);
 	if (errno)
-	{
-		write(2, cmd, ft_strlen(cmd));
-		write(2, ": command not found\n", 20);
-		return (-1);
-	}
+		{
+			write(2, cmd, ft_strlen(cmd));
+			write(2, ": command not found\n", 20);
+			ft_split_del(paths);
+			return (-1);
+		}
+		return (0);
 	return (0);
 }
 
@@ -94,7 +100,7 @@ int		spawn_proc(int in, int out, t_command *command, t_job *job)
 			;
 		else
 			execve_with_envp(command->cmd, command->argv, g_env->envp);
-		exit(-1);
+		exit(123);
 	}
 	return (pid);
 }

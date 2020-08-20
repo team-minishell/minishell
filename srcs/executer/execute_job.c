@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 19:53:10 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/20 17:43:27 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/20 21:12:01 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ int		fork_pipes(int n, t_command *command, t_job *job)
 			in = fd[0];
 		}
 		pid = spawn_proc(in, 1, command + i, job);
+		waitpid(pid, &g_status, 0);
 	}
 	return (pid);
 }
@@ -86,13 +87,12 @@ void	execute_job(t_job *job)
 		if ((job->str)[0] == '\0' || job->str == NULL)
 			exit(MALLOC_ERROR);
 		if (!ft_strcmp(job->command->cmd, "exit"))
-			exit(0);
+			execute_exit(job->command);
 		if (!ft_strcmp(job->command->cmd, "cd"))
 			execute_cd(job->command);
 		else
 		{
 			pid = fork_pipes(job->command->idx, job->command, job);
-			waitpid(pid, &g_status, 0);
 		}
 		job = job->next;
 	}

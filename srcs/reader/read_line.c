@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_line.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:24:13 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/17 19:57:13 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/20 21:05:10 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,17 @@ int		is_end_escape(char *line)
 /*
 ** line을 읽어오는데 ' 나 "가 있는 경우, 줄 바꿈 문자까지 읽어온다.
 */
+
+int		ctrl_d(char **line)
+{
+	if (ft_strlen(*line) == 0)
+	{
+		ft_printf("exit\n");
+		exit(0);
+	}
+	ft_printf("  \b\b");
+	return (0);
+}
 
 int		multiline_eof_exception(char *line)
 {
@@ -65,7 +76,7 @@ int		read_line2(t_quote *q, int fd, char **origin, char **new_line)
 	return (0);
 }
 
-int		read_line(int fd, char **line)
+int		read_line(int fd, char **line, int read_ret)
 {
 	int		i;
 	char	*tmp;
@@ -74,10 +85,8 @@ int		read_line(int fd, char **line)
 
 	i = 0;
 	if (get_next_line(fd, line) == 0)
-	{
-		ft_printf("exit\n");
-		exit(0);
-	}
+		if (ctrl_d(line))
+			return (1);
 	q.dq = -1;
 	q.sq = -1;
 	new_line = ft_strdup("");

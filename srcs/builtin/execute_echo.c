@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 20:35:08 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/14 19:30:01 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/20 20:14:16 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,5 @@ int		execute_echo(t_command *command)
 		}
 		ft_printf("\n");
 	}
-	return (0);
+	exit(0);
 }
