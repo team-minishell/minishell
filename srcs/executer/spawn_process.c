@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   spawn_process.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 15:11:02 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/18 19:29:41 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/20 17:46:14 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int		spawn_proc(int in, int out, t_command *command, t_job *job)
 			;
 		else
 			execve_with_envp(command->cmd, command->argv, g_env->envp);
-		exit(0);
+		exit(-1);
 	}
 	return (pid);
 }

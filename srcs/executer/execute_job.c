@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_job.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/16 19:53:10 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/18 20:35:55 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/20 17:43:27 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ int		fork_pipes(int n, t_command *command, t_job *job)
 void	execute_job(t_job *job)
 {
 	pid_t	pid;
-	int		status;
 
 	while (job)
 	{
@@ -93,7 +92,7 @@ void	execute_job(t_job *job)
 		else
 		{
 			pid = fork_pipes(job->command->idx, job->command, job);
-			waitpid(pid, &status, 0);
+			waitpid(pid, &g_status, 0);
 		}
 		job = job->next;
 	}

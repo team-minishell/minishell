@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_argv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:45:43 by hna               #+#    #+#             */
-/*   Updated: 2020/08/18 15:10:50 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/20 17:42:55 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,15 @@ char		*convert_env(char *str)
 	ret = str;
 	while (str[i])
 	{
-		if (str[i] == '$' && str[i + 1] != '(')
+		if (str[i] == '$' && str[i + 1] == '?')
+		{
+			target = ft_strdup(&str[i]);
+			ret = convert_str(str, "$?", ft_itoa(g_status));
+			free(target);
+			free(str);
+			str = ret;
+		}
+		else if (str[i] == '$' && str[i + 1] != '(')
 		{
 			value = find_value_in_dict(g_env->envd, &str[i + 1]);
 			target = ft_strdup(&str[i]);

@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 19:19:53 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/19 23:07:04 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/20 17:43:43 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ typedef	struct		s_redi
 */
 
 t_env				*g_env;
+int					g_status;
 
 /*
 ** builtin/execute_cd.c
