@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:23:53 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/21 20:45:01 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/21 23:04:16 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,10 @@ int		main(int argc, char **argv, char **envp)
 				if (!check_syntax(m.line))
 				{
 					m.job = parse_line(m.line);
-					test_job(m.job);
 					if (m.job)
 						execute_job(m.job);
 					free_job(m.job);
+
 				}
 				free(m.line);
 			}

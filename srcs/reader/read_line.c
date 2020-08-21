@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:24:13 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/21 20:35:00 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/21 21:56:03 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,13 @@ int		read_line(int fd, char **line)
 	int		i;
 	char	*tmp;
 	char	*new_line;
-	char	buf[2];
 	t_quote	q;
 
 	i = 0;
 	if (get_next_line(fd, line) == 0)
 		if (!ctrl_d(line))
 			return (0);
-	q.dq = -1;
-	q.sq = -1;
+	init_quote(&q);
 	new_line = ft_strdup("");
 	tmp = new_line;
 	new_line = ft_strjoin(new_line, *line);

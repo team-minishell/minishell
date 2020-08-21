@@ -6,18 +6,34 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:45:43 by hna               #+#    #+#             */
-/*   Updated: 2020/08/20 21:19:47 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/21 23:36:24 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+char		*ft_strdup_alnum(char *str)
+{
+	int		i;
+	char	*ret;
+
+	i = 0;
+	while(str[i])
+	{
+		if (!ft_isalnum(str[i]))
+			break;
+		i++;
+	}
+	ret = ft_strdup(str);
+	ret[i] = '\0';
+	return (ret);
+}
 
 char		*convert_env(char *str)
 {
 	int		i;
 	char	*target;
 	char	*value;
-	char	*key;
 	char	*ret;
 
 	i = 0;
@@ -26,19 +42,27 @@ char		*convert_env(char *str)
 	{
 		if (str[i] == '$' && str[i + 1] == '?')
 		{
-			target = ft_strdup(&str[i]);
 			ret = convert_str(str, "$?", ft_itoa(g_status));
-			free(target);
 			free(str);
 			str = ret;
 		}
+		else if (i == 0 && str[i] == '~' && (str[i + 1] == 0 || str[i + 1] == '/'))
+		{
+			ret = convert_str(str, "~", "$HOME");
+			free(str);
+			str = ret;
+			i--;
+		}
 		else if (str[i] == '$' && str[i + 1] != '(')
 		{
-			value = find_value_in_dict(g_env->envd, &str[i + 1]);
-			target = ft_strdup(&str[i]);
-			ret = convert_str(str, target, value);
+			char	*target2;
+			target = ft_strdup_alnum(&str[i + 1]);
+			value = find_value_in_dict(g_env->envd, target);
+			target2 = ft_strjoin("$", target);
+			ret = convert_str(str, target2, value);
 			free(value);
 			free(target);
+			free(target2);
 			free(str);
 			str = ret;
 		}
@@ -47,11 +71,9 @@ char		*convert_env(char *str)
 	return (ret);
 }
 
-char		*delete_quote_convert_env(char *str)
+char		*delete_quote(char *str)
 {
 	int		len;
-	char	*temp;
-	char	*key;
 
 	if (str[0] == '\'')
 	{
@@ -66,7 +88,6 @@ char		*delete_quote_convert_env(char *str)
 		ft_memmove(str, &str[1], len);
 		str[len - 2] = '\0';
 	}
-	str = convert_env(str);
 	return (str);
 }
 
@@ -83,22 +104,30 @@ int			set_argv(t_job *job)
 {
 	int		i;
 	int		n;
+	int		del_quote;
 	char	**splits;
 
-	n = 0;
-	while (n < job->command->idx)
+	n = -1;
+	del_quote = 0;
+	while (++n < job->command->idx)
 	{
-		i = 0;
+		i = -1;
 		splits = split_except_quote(((job->command) + n)->line, ' ');
-		while (splits[i])
+		while (splits[++i])
 		{
 			splits[i] = ft_strtrim_free_s1(splits[i], " ");
-			splits[i] = delete_quote_convert_env(splits[i]);
-			i++;
+			if (splits[i][0] == '\'' || splits[i][0] == '\"')
+				del_quote = 1;
+			if (splits[i][0] != '\'')
+			{
+				splits[i] = escape_line(splits[i]);
+				splits[i] = convert_env(splits[i]);
+			}
+			if (del_quote)
+				splits[i] = delete_quote(splits[i]);
 		}
 		((job->command) + n)->cmd = splits[0];
 		((job->command) + n)->argv = splits;
-		n++;
 	}
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_except_quote.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 19:30:37 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/18 20:24:08 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/21 22:58:05 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,11 @@ int				get_split_len(char *str, char c)
 
 	i = 0;
 	ret = 0;
-	q.dq = -1;
-	q.sq = -1;
+	init_quote(&q);
 	while (str[i])
 	{
 		check_quote(&q, str, i);
-		if (str[i] == c && (q.sq == -1 && q.dq == -1))
+		if (str[i] == c && is_quote_closed(&q))
 			ret++;
 		i++;
 	}
@@ -65,13 +64,12 @@ char			**split_except_quote(char *str, char c)
 
 	init_split(&sp);
 	splits = malloc_splits(str, c);
-	q.dq = -1;
-	q.sq = -1;
+	init_quote(&q);
 	while (str[sp.i])
 	{
 		sp.len++;
 		check_quote(&q, str, sp.i);
-		if ((str[sp.i] == c && (q.sq == -1 && q.dq == -1)) \
+		if ((str[sp.i] == c && is_quote_closed(&q)) \
 		|| str[sp.i + 1] == '\0')
 		{
 			splits[sp.split_idx] = ft_strdup(&str[sp.start]);

@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 15:11:02 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/21 18:49:12 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/21 21:55:50 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int		execve_with_envp(char *cmd, char **argv, char **envp)
 	int		i;
 
 	i = 0;
-	if (cmd[i] == '.' && (execve(cmd, argv, envp) == -1))
+	if ((cmd[i] == '.' || cmd[i] == '/') && (execve(cmd, argv, envp) == -1))
 		print_command_not_found(cmd);
 	else
 	{

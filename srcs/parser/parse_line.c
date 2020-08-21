@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:24:00 by hna               #+#    #+#             */
-/*   Updated: 2020/08/21 20:42:01 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/21 23:20:27 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,11 @@ char		*escape_line(char *line)
 	{
 		check_quote(&q, line, i);
 		if (line[i] == '\\' && !in_sq(&q))
-		{
 			ft_memmove(&line[i], &line[i + 1], ft_strlen(&line[i + 1]) + 1);
-		}
 		else if (line[i] == '\"' && line[i + 1] == '\"')
-		{
 			ft_memmove(&line[i], &line[i + 2], ft_strlen(&line[i + 2]) + 1);
-		}
 		else if (line[i] == '\'' && line[i + 1] == '\'')
-		{
 			ft_memmove(&line[i], &line[i + 2], ft_strlen(&line[i + 2]) + 1);
-		}
 		i++;
 	}
 	return (line);
@@ -65,8 +59,6 @@ t_job		*parse_line(char *original_line)
 	if (original_line == 0 || *original_line == 0)
 		return (0);
 	line = ft_strdup(original_line);
-	line = escape_line(line);
-
 	job = create_job(line);
 	first_job = job;
 	while (job)
