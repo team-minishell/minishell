@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 15:11:02 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/21 21:55:50 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/22 00:03:15 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,13 @@ char	**get_paths_from_envp(char **envp)
 ** 4. 메모리 해제 및 에러처리
 */
 
-void	print_command_not_found(char *cmd)
+void	print_my_error(char *cmd, int my_err_num)
 {
-	write(2, cmd, ft_strlen(cmd));
-	write(2, ": command not found\n", 20);
+	ft_putstr_fd(cmd, 2);
+	if (my_err_num == 1)
+		ft_putstr_fd(": command not found\n", 2);
+	else if (my_err_num == 2)
+		ft_putstr_fd(": no usch file or directory\n", 2);
 }
 
 int		execve_with_path(char *path, char *cmd, char **argv, char **envp)
@@ -75,7 +78,7 @@ int		execve_with_envp(char *cmd, char **argv, char **envp)
 
 	i = 0;
 	if ((cmd[i] == '.' || cmd[i] == '/') && (execve(cmd, argv, envp) == -1))
-		print_command_not_found(cmd);
+		ft_perror(cmd, errno);
 	else
 	{
 		paths = get_paths_from_envp(envp);
@@ -86,10 +89,11 @@ int		execve_with_envp(char *cmd, char **argv, char **envp)
 				execve_with_path(paths[i], cmd, argv, envp);
 				i++;
 			}
-			print_command_not_found(cmd);
+			print_my_error(cmd, 1);
 			ft_split_del(paths);
 			return (-1);
 		}
+		print_my_error(cmd, 2);
 	}
 	return (0);
 }

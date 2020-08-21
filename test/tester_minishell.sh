@@ -22,5 +22,5 @@ echo "$HOME" > result/ms46.txt
 ls .. > result/ms50.txt >> result/ms51.txt
 grep I < result/ms51.txt > result/ms52.txt
 
-cat result/ms52.txt | grep a | wc> result/ms60.txt
+cat result/ms52.txt | grep a | wc > result/ms60.txt
 cat sdfijdsifsojfdi | grep a | wc > result/ms61.txt
