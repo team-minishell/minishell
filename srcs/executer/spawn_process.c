@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 15:11:02 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/21 16:47:12 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/21 18:49:12 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,35 +47,49 @@ char	**get_paths_from_envp(char **envp)
 ** 4. 메모리 해제 및 에러처리
 */
 
+void	print_command_not_found(char *cmd)
+{
+	write(2, cmd, ft_strlen(cmd));
+	write(2, ": command not found\n", 20);
+}
+
+int		execve_with_path(char *path, char *cmd, char **argv, char **envp)
+{
+	int		ret;
+	char	*full_path;
+	char	*temp_path;
+
+	ret = 0;
+	temp_path = ft_strjoin(path, "/");
+	full_path = ft_strjoin(temp_path, cmd);
+	free(temp_path);
+	ret = execve(full_path, argv, envp);
+	free(full_path);
+	return (ret);
+}
+
 int		execve_with_envp(char *cmd, char **argv, char **envp)
 {
 	char	**paths;
-	char	*full_path;
-	char	*temp_path;
 	int		i;
 
 	i = 0;
-	paths = get_paths_from_envp(envp);
-	if (paths == 0)
-		execve(cmd, argv, envp);
+	if (cmd[i] == '.' && (execve(cmd, argv, envp) == -1))
+		print_command_not_found(cmd);
 	else
 	{
-		execve(cmd, argv, envp);
-		while (paths[i])
+		paths = get_paths_from_envp(envp);
+		if (paths != 0)
 		{
-			temp_path = ft_strjoin(paths[i], "/");
-			full_path = ft_strjoin(temp_path, cmd);
-			free(temp_path);
-			execve(full_path, argv, envp);
-			i++;
+			while (paths[i])
+			{
+				execve_with_path(paths[i], cmd, argv, envp);
+				i++;
+			}
+			print_command_not_found(cmd);
+			ft_split_del(paths);
+			return (-1);
 		}
-	}
-	if (errno)
-	{
-		write(2, cmd, ft_strlen(cmd));
-		write(2, ": command not found\n", 20);
-		ft_split_del(paths);
-		return (-1);
 	}
 	return (0);
 }
