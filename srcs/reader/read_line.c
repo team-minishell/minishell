@@ -6,25 +6,11 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:24:13 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/20 21:05:10 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/21 20:35:00 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int		is_end_escape(char *line)
-{
-	int		i;
-
-	i = 0;
-	while (line[i])
-		i++;
-	if (i == 1 && line[i - 1] == '\\')
-		return (1);
-	if (i >= 2 && line[i - 1] == '\\' && line[i - 2] != '\\')
-		return (1);
-	return (0);
-}
 
 /*
 ** line을 읽어오는데 ' 나 "가 있는 경우, 줄 바꿈 문자까지 읽어온다.
@@ -32,12 +18,20 @@ int		is_end_escape(char *line)
 
 int		ctrl_d(char **line)
 {
+	char *tmp;
+
+	ft_printf("  \b\b");
 	if (ft_strlen(*line) == 0)
 	{
 		ft_printf("exit\n");
 		exit(0);
 	}
-	ft_printf("  \b\b");
+	while (get_next_line(0, &tmp) == 0)
+	{
+		ft_printf("  \b\b");
+		free(tmp);
+	}
+	free(tmp);
 	return (0);
 }
 
@@ -56,7 +50,7 @@ int		read_line2(t_quote *q, int fd, char **origin, char **new_line)
 	char	*line;
 
 	line = *origin;
-	while (!(q->sq == -1 && q->dq == -1) || is_end_escape(line))
+	while (!(is_quote_closed(q)))
 	{
 		i = 0;
 		ft_printf("> ");
@@ -76,17 +70,18 @@ int		read_line2(t_quote *q, int fd, char **origin, char **new_line)
 	return (0);
 }
 
-int		read_line(int fd, char **line, int read_ret)
+int		read_line(int fd, char **line)
 {
 	int		i;
 	char	*tmp;
 	char	*new_line;
+	char	buf[2];
 	t_quote	q;
 
 	i = 0;
 	if (get_next_line(fd, line) == 0)
-		if (ctrl_d(line))
-			return (1);
+		if (!ctrl_d(line))
+			return (0);
 	q.dq = -1;
 	q.sq = -1;
 	new_line = ft_strdup("");

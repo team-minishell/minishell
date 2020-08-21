@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:24:00 by hna               #+#    #+#             */
-/*   Updated: 2020/08/21 17:01:23 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/21 20:42:01 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,9 @@ int			in_sq(t_quote *q)
 
 char		*escape_line(char *line)
 {
-	int		idx;
 	int		i;
-	char	*e_line;
 	t_quote	q;
 
-	idx = 0;
 	i = 0;
 	init_quote(&q);
 	while (line[i])
@@ -39,6 +36,14 @@ char		*escape_line(char *line)
 		if (line[i] == '\\' && !in_sq(&q))
 		{
 			ft_memmove(&line[i], &line[i + 1], ft_strlen(&line[i + 1]) + 1);
+		}
+		else if (line[i] == '\"' && line[i + 1] == '\"')
+		{
+			ft_memmove(&line[i], &line[i + 2], ft_strlen(&line[i + 2]) + 1);
+		}
+		else if (line[i] == '\'' && line[i + 1] == '\'')
+		{
+			ft_memmove(&line[i], &line[i + 2], ft_strlen(&line[i + 2]) + 1);
 		}
 		i++;
 	}
@@ -61,6 +66,7 @@ t_job		*parse_line(char *original_line)
 		return (0);
 	line = ft_strdup(original_line);
 	line = escape_line(line);
+
 	job = create_job(line);
 	first_job = job;
 	while (job)

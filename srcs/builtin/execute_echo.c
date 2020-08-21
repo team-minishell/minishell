@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 20:35:08 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/21 16:51:23 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/21 20:24:36 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,5 @@ int		execute_echo(t_command *command)
 		}
 		ft_printf("\n");
 	}
-	exit(0);
+	return (0);
 }

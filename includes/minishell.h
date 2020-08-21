@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 19:19:53 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/20 20:23:59 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/21 20:25:33 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ typedef struct		s_main
 	t_env			env;
 	t_job			*job;
 	char			*line;
-	int				read_ret;
 }					t_main;
 
 /*
@@ -111,6 +110,7 @@ typedef struct		s_quote
 {
 	int				sq;
 	int				dq;
+	int				esc;
 }					t_quote;
 
 typedef struct		s_split
@@ -245,7 +245,7 @@ void				check_quote(t_quote *q, char *line, int i);
 ** reader/read_line.c
 */
 
-int					read_line(int fd, char **line, int read_ret);
+int					read_line(int fd, char **line);
 
 /*
 ** utils/convert_str.c

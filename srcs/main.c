@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:23:53 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/21 18:00:56 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/21 20:45:01 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,50 @@ void	set_envs(t_main *m, char **envp)
 	g_env = &(m->env);
 }
 
+void		test_job(t_job *job)
+{
+	int		i;
+	int		n;
+	char	**argv;
+	t_redirect	*redi;
+
+	ft_printf("========job struct test========\n");
+	while (job)
+	{
+		i = 0;
+		ft_printf("job: %p\n", job);
+		ft_printf("job->str: %s$\n", job->str);
+		// ft_printf("=====command=====\n");
+		ft_printf("job->command->idx: %d$\n", job->command->idx);
+		while (i < job->command->idx)
+		{
+			ft_printf("\tcommand[%d]->line : %s$\n", i, ((job->command) + i)->line);
+			redi = ((job->command) + i)->redirect;
+			while (redi)
+			{
+				ft_printf("\tredirect sign: %d\n", redi->sign);
+				ft_printf("\tredirect path: %s\n", redi->filepath);
+				redi = redi->next;
+			}
+			n = 0;
+			argv = ((job->command) + i)->argv;
+			while (argv[n])
+			{
+				ft_printf("\t\targv[%d]:%s$\n", n, argv[n]);
+				n++;
+			}
+			i++;
+		}
+		job = job->next;
+	}
+	ft_printf("================================\n");
+}
+
 int		main(int argc, char **argv, char **envp)
 {
 	t_main	m;
 
 	m.pid = 1;
-	m.read_ret = 0;
 	set_envs(&m, envp);
 	clear_screen();
 	handle_signal();
@@ -67,13 +105,13 @@ int		main(int argc, char **argv, char **envp)
 	{
 		if (m.pid > 0)
 		{
-			if (m.read_ret != 1)
-				ft_printf("\033[0;32mminishell> \033[0;0m");
-			if ((m.read_ret = read_line(0, &m.line, m.read_ret)) != 1)
+			ft_printf("\033[0;32mminishell> \033[0;0m");
+			if (read_line(0, &m.line) != 1)
 			{
 				if (!check_syntax(m.line))
 				{
 					m.job = parse_line(m.line);
+					test_job(m.job);
 					if (m.job)
 						execute_job(m.job);
 					free_job(m.job);
