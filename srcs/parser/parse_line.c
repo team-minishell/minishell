@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   parse_line.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:24:00 by hna               #+#    #+#             */
-/*   Updated: 2020/08/18 20:25:40 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/21 17:01:23 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int			in_sq(t_quote *q)
+{
+	if (q->sq == 1)
+		return (1);
+	return (0);
+}
 
 /*
 ** escape 기호 처리
@@ -21,12 +28,15 @@ char		*escape_line(char *line)
 	int		idx;
 	int		i;
 	char	*e_line;
+	t_quote	q;
 
 	idx = 0;
 	i = 0;
+	init_quote(&q);
 	while (line[i])
 	{
-		if (line[i] == '\\')
+		check_quote(&q, line, i);
+		if (line[i] == '\\' && !in_sq(&q))
 		{
 			ft_memmove(&line[i], &line[i + 1], ft_strlen(&line[i + 1]) + 1);
 		}

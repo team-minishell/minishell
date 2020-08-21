@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:23:53 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/20 20:23:45 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/21 18:00:56 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int		ft_perror(char *str, int err_num)
 	}
 	ft_split_del(split);
 	write(2, str, ft_strlen(str));
-	write(2, " : ", 3);
+	write(2, ": ", 2);
 	write(2, error_str, ft_strlen(error_str));
 	write(2, "\n", 1);
 	return (-1);

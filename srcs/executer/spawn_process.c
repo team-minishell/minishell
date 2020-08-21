@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 15:11:02 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/20 21:41:14 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/21 16:47:12 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,12 @@ int		execve_with_envp(char *cmd, char **argv, char **envp)
 		}
 	}
 	if (errno)
-		{
-			write(2, cmd, ft_strlen(cmd));
-			write(2, ": command not found\n", 20);
-			ft_split_del(paths);
-			return (-1);
-		}
-		return (0);
+	{
+		write(2, cmd, ft_strlen(cmd));
+		write(2, ": command not found\n", 20);
+		ft_split_del(paths);
+		return (-1);
+	}
 	return (0);
 }
 
@@ -100,7 +99,7 @@ int		spawn_proc(int in, int out, t_command *command, t_job *job)
 			;
 		else
 			execve_with_envp(command->cmd, command->argv, g_env->envp);
-		exit(123);
+		exit(12);
 	}
 	return (pid);
 }

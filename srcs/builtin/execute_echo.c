@@ -6,21 +6,20 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 20:35:08 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/20 20:14:16 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/21 16:51:23 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_string_without_doublequote(char *string)
+void	print_string(char *string)
 {
 	int i;
 
 	i = 0;
 	while (string[i] != '\0')
 	{
-		if (string[i] != '\"')
-			ft_putchar_fd(string[i], 1);
+		ft_putchar_fd(string[i], 1);
 		i++;
 	}
 }
@@ -34,7 +33,7 @@ int		execute_echo(t_command *command)
 		i = 2;
 		while (command->argv[i])
 		{
-			print_string_without_doublequote(command->argv[i++]);
+			print_string(command->argv[i++]);
 			if (command->argv[i])
 				ft_printf(" ");
 		}
@@ -44,7 +43,7 @@ int		execute_echo(t_command *command)
 		i = 1;
 		while (command->argv[i])
 		{
-			print_string_without_doublequote(command->argv[i++]);
+			print_string(command->argv[i++]);
 			if (command->argv[i])
 				ft_printf(" ");
 		}
