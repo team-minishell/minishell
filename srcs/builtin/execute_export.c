@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
+/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/17 21:25:36 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/21 19:14:56 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/24 19:46:44 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,18 @@ void	if_already_exist(t_dict *already, char **splits)
 	already->value = splits[1];
 }
 
+void	set_envp(void)
+{
+	char	**tmp;
+
+	tmp = g_env->envp;
+	g_env->envp = make_dict_to_envp(g_env->envd);
+	ft_split_del(tmp);
+}
+
 int		execute_export(t_command *command)
 {
 	char	**splits;
-	char	**tmp;
 	t_dict	*already;
 	t_dict	*new;
 	t_dict	*dict_tmp;
@@ -44,9 +52,7 @@ int		execute_export(t_command *command)
 		new->value = splits[1];
 		free(splits);
 	}
-	tmp = g_env->envp;
-	g_env->envp = make_dict_to_envp(g_env->envd);
-	ft_split_del(tmp);
+	set_envp();
 	g_status = 0;
 	return (0);
 }

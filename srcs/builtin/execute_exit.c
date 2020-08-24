@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   execute_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
+/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/20 20:03:07 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/20 21:28:22 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/24 19:43:10 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	print_argument_error(char *str)
+{
+	ft_putstr_fd("exit: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(" numeric argument required\n", 2);
+}
 
 void	execute_exit(t_command *command)
 {
@@ -30,10 +37,8 @@ void	execute_exit(t_command *command)
 		{
 			if (!(ft_isdigit(command->argv[1][i])))
 			{
-				ft_putstr_fd("exit: ", 2);
-				ft_putstr_fd(command->argv[1], 2);
-				ft_putstr_fd(" numeric argument required\n", 2);
-				break;
+				print_argument_error(command->argv[1]);
+				break ;
 			}
 			i++;
 		}

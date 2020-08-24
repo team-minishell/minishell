@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
+/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 19:19:53 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/21 23:15:52 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/24 20:27:11 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,8 +211,7 @@ t_job				*create_job(char *line);
 */
 
 int					set_argv(t_job *job);
-char				*delete_quote(char *str);
-
+char				*delete_quote(char *str, int del_quote);
 
 /*
 ** parser/make_commands.c

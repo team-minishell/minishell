@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_quote.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
+/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 21:05:12 by hna               #+#    #+#             */
-/*   Updated: 2020/08/21 20:15:50 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/24 20:22:12 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 ** 닫혀있음 : -1("hello world")
 ** 열려있음 : 1 ("hello world)
 */
+
 void		check_sqdq(t_quote *q, char *line, int i)
 {
 	if (i == 0 && line[i] == '\"')

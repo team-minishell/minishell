@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
+/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:23:53 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/21 23:04:16 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/24 19:47:48 by hna              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,45 +54,6 @@ void	set_envs(t_main *m, char **envp)
 	g_env = &(m->env);
 }
 
-void		test_job(t_job *job)
-{
-	int		i;
-	int		n;
-	char	**argv;
-	t_redirect	*redi;
-
-	ft_printf("========job struct test========\n");
-	while (job)
-	{
-		i = 0;
-		ft_printf("job: %p\n", job);
-		ft_printf("job->str: %s$\n", job->str);
-		// ft_printf("=====command=====\n");
-		ft_printf("job->command->idx: %d$\n", job->command->idx);
-		while (i < job->command->idx)
-		{
-			ft_printf("\tcommand[%d]->line : %s$\n", i, ((job->command) + i)->line);
-			redi = ((job->command) + i)->redirect;
-			while (redi)
-			{
-				ft_printf("\tredirect sign: %d\n", redi->sign);
-				ft_printf("\tredirect path: %s\n", redi->filepath);
-				redi = redi->next;
-			}
-			n = 0;
-			argv = ((job->command) + i)->argv;
-			while (argv[n])
-			{
-				ft_printf("\t\targv[%d]:%s$\n", n, argv[n]);
-				n++;
-			}
-			i++;
-		}
-		job = job->next;
-	}
-	ft_printf("================================\n");
-}
-
 int		main(int argc, char **argv, char **envp)
 {
 	t_main	m;
@@ -114,7 +75,6 @@ int		main(int argc, char **argv, char **envp)
 					if (m.job)
 						execute_job(m.job);
 					free_job(m.job);
-
 				}
 				free(m.line);
 			}
