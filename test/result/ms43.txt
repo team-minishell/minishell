@@ -1,7 +1,0 @@
-Makefile
-includes
-libft
-minishell
-obj
-srcs
-test

@@ -1,4 +1,0 @@
-grademe.sh
-result
-tester_bash.sh
-tester_minishell.sh
