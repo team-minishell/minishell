@@ -6,11 +6,15 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:23:34 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/20 21:28:03 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/26 00:03:10 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** 2차원 배열 환경변수를 딕셔너리로 변환한다.
+*/
 
 t_dict	*make_env_to_dict(char **envp)
 {
@@ -54,6 +58,10 @@ int		dict_size(t_dict *dict)
 	return (i);
 }
 
+/*
+** 환경변수 딕셔너리를 2차원 배열로 변환한다.
+*/
+
 char	**make_dict_to_envp(t_dict *envd)
 {
 	char	**envp;
@@ -80,6 +88,10 @@ char	**make_dict_to_envp(t_dict *envd)
 	envp[i] = 0;
 	return (envp);
 }
+
+/*
+** 키 문자열로 딕셔너리에서 값을 찾아 반환한다.
+*/
 
 t_dict	*find_env(t_dict *envd, char *key)
 {

@@ -6,14 +6,14 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:24:13 by yochoi            #+#    #+#             */
-/*   Updated: 2020/08/21 21:56:03 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/26 00:06:50 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*
-** line을 읽어오는데 ' 나 "가 있는 경우, 줄 바꿈 문자까지 읽어온다.
+** 입력중 EOF SIGNAL이 들어오는 경우 쉘을 종료한다.
 */
 
 int		ctrl_d(char **line)
@@ -42,6 +42,11 @@ int		multiline_eof_exception(char *line)
 	free(line);
 	return (1);
 }
+
+/*
+** 줄바꿈 문자를 끝으로 문자열을 입력받는다.
+** quote가 열려있다면, 줄바꿈 문자까지 입력받는다.
+*/
 
 int		read_line2(t_quote *q, int fd, char **origin, char **new_line)
 {

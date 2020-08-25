@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 15:11:02 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/22 00:03:15 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/26 00:19:10 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,6 @@ char	**get_paths_from_envp(char **envp)
 	return (0);
 }
 
-/*
-** 1. get_paths_from_envp로 경로들을 가져온다.
-** 2. PATH 경로 없이 실행시켜본다.
-** 3. paths들에 있는 기본경로들을 join 해보면서 실행시킨다.
-** 4. 메모리 해제 및 에러처리
-*/
-
 void	print_my_error(char *cmd, int my_err_num)
 {
 	ft_putstr_fd(cmd, 2);
@@ -70,6 +63,13 @@ int		execve_with_path(char *path, char *cmd, char **argv, char **envp)
 	free(full_path);
 	return (ret);
 }
+
+/*
+** 1. get_paths_from_envp로 경로들을 가져온다.
+** 2. PATH 경로 없이 실행시켜본다.
+** 3. paths들에 있는 기본경로들을 join 해보면서 실행시킨다.
+** 4. 메모리 해제 및 에러처리
+*/
 
 int		execve_with_envp(char *cmd, char **argv, char **envp)
 {

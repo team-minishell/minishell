@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   make_argv.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:45:43 by hna               #+#    #+#             */
-/*   Updated: 2020/08/24 20:21:45 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/26 00:17:44 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** 환경변수 이름은 숫자와 알파벳으로만 되어있기 때문에,
+** 변환 시 특수문자가 나오는 경우에는 복사를 끝낸다.
+*/
 
 char		*ft_strdup_alnum(char *str)
 {
@@ -50,6 +55,10 @@ char		*convert_str_free_str(char *str, char *s1, char *s2, int mode)
 	free(str);
 	return (ret);
 }
+
+/*
+** 환경변수 기호가 나오는 경우 키값을 찾아서 변환한다.
+*/
 
 char		*convert_env(char *str)
 {
@@ -105,7 +114,7 @@ char		*delete_quote(char *str, int del_quote)
 /*
 ** create_job 에서 생성한 job->str을 이용해서
 ** 1. space를 기준으로 나누고 (split)
-** 2. 앞뒤 공백을 제거 (ft_strtrim)
+** 2. quote로 감싸져 있는지 확인
 ** 3. 따옴표에 따라 환경변수를 치환 (convert_env)
 ** 4. 따옴표 제거 (delete_quote)
 ** 5. command->cmd와 command->argv에 올바른 값을 넣는다.

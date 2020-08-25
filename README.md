@@ -6,9 +6,7 @@
 
 Project with [yochoi](https://github.com/AMATEURTOSS)
 
-참고 [mongshell](https://github.com/eunhyulkim/minishell) 
-
-https://stackoverflow.com/questions/8082932/connecting-n-commands-with-pipes-in-a-shell
+참고 [mongshell](https://github.com/eunhyulkim/minishell) [fork_pipes](https://stackoverflow.com/questions/8082932/connecting-n-commands-with-pipes-in-a-shell)
 
 ---
 
@@ -56,7 +54,7 @@ https://stackoverflow.com/questions/8082932/connecting-n-commands-with-pipes-in-
 
    fork와 exec함수를 이용하는거에 파이프가 연속적으로 오는 경우를 고려해서 구현하는게 가장 어려웠습니다.
 
-   많이 고민하던 와중에 팀원분이 stack overflow에 딱 알맞는 질문과 답변이 올라와있는 [링크][https://stackoverflow.com/questions/8082932/connecting-n-commands-with-pipes-in-a-shell]를 주셔서 해결했습니다.
+   많이 고민하던 와중에 팀원분이 stack overflow에 딱 알맞는 질문과 답변이 올라와있는 링크를 주셔서 해결했습니다.
 
    
 

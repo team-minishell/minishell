@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   check_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 20:57:24 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/18 20:57:36 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/26 00:09:32 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/*
+** 파이프 기호나 리디렉션 기호로 split된 문자열의 첫 문자가 NULL 이라면,
+** 문법 에러로 처리한다. (ex: >>>, |||, <<)
+*/
 
 int		is_valid_splits(char **splits)
 {

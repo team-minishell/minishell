@@ -6,7 +6,7 @@
 /*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/14 20:24:00 by hna               #+#    #+#             */
-/*   Updated: 2020/08/21 23:20:27 by nahangyeol       ###   ########.fr       */
+/*   Updated: 2020/08/26 00:13:25 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,10 @@ char		*escape_line(char *line)
 }
 
 /*
-** 1. line을 ';'으로 구분해서 job을 나눈다.
-** 2. 각 job의 redirection을 설정한다.
-** 3. 각 job을 ' '로 구분해서 cmd와 argv로 구분한다.
+** 1. ';'으로 구분된 job을 파싱
+** 2. '|'으로 구분된 commands 파싱
+** 3. 리디렉션 파싱
+** 4. argv 파싱
 */
 
 t_job		*parse_line(char *original_line)
