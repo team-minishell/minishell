@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hna <hna@student.42.fr>                    +#+  +:+       +#+        */
+/*   By: nahangyeol <nahangyeol@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/18 19:19:53 by nahangyeol        #+#    #+#             */
-/*   Updated: 2020/08/24 20:27:11 by hna              ###   ########.fr       */
+/*   Updated: 2020/08/25 22:10:42 by nahangyeol       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,45 +138,15 @@ int					g_status;
 int					g_escape;
 
 /*
-** builtin/execute_cd.c
+** builtin/
 */
 
 int					execute_cd(t_command *command);
-
-/*
-** builtin/execute_echo.c
-*/
-
 int					execute_echo(t_command *command);
-
-/*
-** builtin/execute_env.c
-*/
-
 int					execute_env(void);
-
-/*
-** builtin/execute_export.c
-*/
-
 int					execute_export(t_command *command);
-
-/*
-** builtin/execute_pwd.c
-*/
-
 int					execute_pwd(t_command *command);
-
-/*
-** builtin/execute_unset.c
-*/
-
 int					execute_unset(t_command *command);
-
-/*
-** builtin/execute_exit.c
-*/
-
 void				execute_exit(t_command *command);
 
 /*
