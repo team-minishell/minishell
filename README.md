@@ -12,9 +12,7 @@ Project with [yochoi](https://github.com/AMATEURTOSS)
 
 1. [환경변수 처리](./srcs/utils/manage_list.c)
 
-   처음엔 환경변수를 2차원 배열로만 관리하다가 shell의 export나 unset, PATH 등을 구현하려니 이차원 배열에서
-
-   데이터의 추가나 삭제, 검색이 어려웠습니다.
+   처음엔 환경변수를 2차원 배열로만 관리하다가 shell의 export나 unset, PATH 등을 구현하려니 이차원 배열에서 데이터의 추가나 삭제, 검색이 어려웠습니다.
 
    결국 환경변수를 딕셔너리로 키, 밸류 쌍으로 만들고 링크드리스트 형태로 추가나 제거, 탐색등이 쉽도록 구현하였습니다.
 
@@ -22,13 +20,11 @@ Project with [yochoi](https://github.com/AMATEURTOSS)
 
 2. [시그널 처리](./srcs/handle_signal.c)
 
-   Ctrl + c, d, \를 bash처럼 동작하도록 하는데,  각각 INTERUPT, EOF, QUIT 이
-
-   아무것도 입력되지 않은 상태, 문자가 입력된 상태, blocking 상태에 따라서도 각각의 동작이 달라져서 어려움이 있었습니다.
+   INTERUPT, EOF, QUIT SIGNAL이 아무것도 입력되지 않은 상태, 문자가 입력된 상태, blocking 상태인지에 따라서도 각각의 동작이 달라져서 어려움이 있었습니다.
 
    
 
-3. [입력](./srcs/reader/read_line.c)
+3. [입력](./srcs/reader)
 
    double quote, simple quote가 나오는 경우 줄바꿈 문자까지 입력받도록 하기가 어려웠습니다.
 
@@ -42,7 +38,7 @@ Project with [yochoi](https://github.com/AMATEURTOSS)
 
    
 
-5. [파싱](./srcs/parser/parse_line.c)
+5. [파싱](./srcs/parser)
 
    이 부분이 가장 어려웠습니다. 처음엔 리디렉션이나 파이프가 있는 명령을 C언어로 어떻게 실행하는지 조차 모르니, 파싱받을 구조체를 어떻게 설계하느냐부터 가장 어려웠습니다.
 
@@ -50,7 +46,7 @@ Project with [yochoi](https://github.com/AMATEURTOSS)
 
    
 
-6. [실행](./srcs/executer/execute_job.c)
+6. [실행](./srcs/executer)
 
    처음엔 fork와 exec함수를 이용하면서 프로세스를 이해하는데 힘들었고,
 
@@ -58,9 +54,9 @@ Project with [yochoi](https://github.com/AMATEURTOSS)
 
    
 
-7. [메모리 해제](./srcs/free.c)
+7. [빌트인 함수](./srcs/builtin)
 
-
+   cd, pwd, env, export, unset, exit, echo 명령이 빌트인으로 구현되었습니다.
 
 ---
 
@@ -69,8 +65,6 @@ Project with [yochoi](https://github.com/AMATEURTOSS)
 [mongshell](https://github.com/eunhyulkim/minishell) 
 
 [fork_pipes](https://stackoverflow.com/questions/8082932/connecting-n-commands-with-pipes-in-a-shell)
-
-
 
 ---
 
