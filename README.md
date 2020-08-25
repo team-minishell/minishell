@@ -1,14 +1,14 @@
 # Minishell
 
-
+[![Watch the video](https://img.youtube.com/vi/1LKCB-TarCw/hqdefault.jpg)](https://youtu.be/1LKCB-TarCw)
 
 ---
 
 Project with [yochoi](https://github.com/AMATEURTOSS)
 
-참고 [mongshell](https://github.com/eunhyulkim/minishell) [fork_pipes](https://stackoverflow.com/questions/8082932/connecting-n-commands-with-pipes-in-a-shell)
-
 ---
+
+#### 프로그램 구조
 
 1. [환경변수 처리](./srcs/utils/manage_list.c)
 
@@ -52,10 +52,25 @@ Project with [yochoi](https://github.com/AMATEURTOSS)
 
 6. [실행](./srcs/executer/execute_job.c)
 
-   fork와 exec함수를 이용하는거에 파이프가 연속적으로 오는 경우를 고려해서 구현하는게 가장 어려웠습니다.
+   처음엔 fork와 exec함수를 이용하면서 프로세스를 이해하는데 힘들었고,
 
-   많이 고민하던 와중에 팀원분이 stack overflow에 딱 알맞는 질문과 답변이 올라와있는 링크를 주셔서 해결했습니다.
+   나중엔 파이프가 연속적으로 오는 경우까지 고려해서 구현하는게 가장 어려웠는데, 파일 디스크립터에 대해서 찾아보고 많이 고민하던 와중에 팀원분이 stack overflow에 딱 알맞는 질문과 답변이 올라와있는 링크를 주셔서 해결했습니다.
 
    
 
 7. [메모리 해제](./srcs/free.c)
+
+
+
+---
+
+참고
+
+[mongshell](https://github.com/eunhyulkim/minishell) 
+
+[fork_pipes](https://stackoverflow.com/questions/8082932/connecting-n-commands-with-pipes-in-a-shell)
+
+
+
+---
+
